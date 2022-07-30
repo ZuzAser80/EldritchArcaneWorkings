@@ -6,7 +6,8 @@
   "mixins": [
   ],
   "client": [
-    "ExampleMixin"
+    "GameHudMixin",
+    "BuiltInItemModelMixin"
   ],
   "injectors": {
     "defaultRequire": 1
