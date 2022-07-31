@@ -6,6 +6,7 @@ import net.fabricmc.example.spell.SpellRank;
 import net.fabricmc.example.spell.SpellType;
 import net.fabricmc.example.spell.spells.AdvancedFireballSpell;
 import net.fabricmc.example.spell.spells.AdvancedSnowballSpell;
+import net.fabricmc.example.spell.spells.LeapSpell;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -62,15 +63,17 @@ public class AbstractMagicRodItem extends Item {
         }
         if(user.getMainHandStack().isOf(this) && !world.isClient) {
             if(manaCount > currentSpell.getManaCost()) {
-                currentSpell.cast(user, world);
-                manaCount -= currentSpell.getManaCost();
-                user.getMainHandStack().getOrCreateNbt().putFloat("manaCount", manaCount);
                 if(currentSpell instanceof AdvancedFireballSpell) {
                     System.out.println("sex");
                     currentSpell = new AdvancedSnowballSpell();
-                } else {
+                } else if(currentSpell instanceof LeapSpell) {
                     currentSpell = new AdvancedFireballSpell();
+                } else if(currentSpell instanceof AdvancedSnowballSpell) {
+                    currentSpell = new LeapSpell();
                 }
+                currentSpell.cast(user, world);
+                manaCount -= currentSpell.getManaCost();
+                user.getMainHandStack().getOrCreateNbt().putFloat("manaCount", manaCount);
             } else {
                 user.getMainHandStack().getOrCreateNbt().putFloat("manaCount", maxManaCap);
                 manaCount = maxManaCap;

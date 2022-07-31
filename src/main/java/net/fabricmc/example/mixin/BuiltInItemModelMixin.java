@@ -58,7 +58,6 @@ public class BuiltInItemModelMixin {
     public void renderStaff(String translationKey, ItemStack stack, MatrixStack matrices, int light, int overlay, VertexConsumerProvider vertexConsumers) {
         AbstractStaffEntityModel model;
         Identifier textureId;
-        System.out.println("the key is: " + translationKey);
         switch (translationKey) {
             case "item.eaw.novice_staff" -> {
                 model = noviceStaffModel;

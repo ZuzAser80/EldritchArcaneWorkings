@@ -16,7 +16,7 @@ public class AdvancedSnowballSpell extends Spell {
     @Override
     public void cast(PlayerEntity user, World world) {
         AdvancedSnowballEntity fireballEntity = new AdvancedSnowballEntity(world);
-        fireballEntity.setPosition(user.getPos());
+        fireballEntity.setPosition(user.getX(), user.getY() + 0.5, user.getZ());
         fireballEntity.setVelocity(user, user.getPitch(), user.getYaw(), 0, 1, 1);
         fireballEntity.setNoGravity(true);
         world.spawnEntity(fireballEntity);

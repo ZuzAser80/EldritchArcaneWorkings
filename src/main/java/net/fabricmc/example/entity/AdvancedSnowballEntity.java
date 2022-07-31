@@ -77,8 +77,10 @@ public class AdvancedSnowballEntity extends PersistentProjectileEntity {
 
     protected void setSnow(World world, BlockPos pos) {
         for (BlockPos blockPos2 : BlockPos.iterate(pos.north(4).east(4).up(4), pos.south(4).west(4).down(4))) {
-            if ((world.getBlockState(blockPos2).isOf(Blocks.AIR) || world.getBlockState(blockPos2).isOf(Blocks.CAVE_AIR) || world.getBlockState(blockPos2).isOf(Blocks.VOID_AIR)) && blockPos2.isWithinDistance(pos, 4)) {
+            if ((world.getBlockState(blockPos2).isOf(Blocks.AIR) || world.getBlockState(blockPos2).isOf(Blocks.CAVE_AIR) || world.getBlockState(blockPos2).isOf(Blocks.VOID_AIR)) && blockPos2.isWithinDistance(pos, 4) && world.getBlockState(pos).isOf(Blocks.FIRE) && world.getBlockState(pos).isOf(Blocks.SOUL_FIRE)) {
                 world.setBlockState(blockPos2, Blocks.POWDER_SNOW.getDefaultState());
+            } else if(blockPos2.isWithinDistance(pos, 4) && world.getBlockState(pos).isOf(Blocks.WATER)) {
+                world.setBlockState(blockPos2, Blocks.ICE.getDefaultState());
             }
         }
     }
