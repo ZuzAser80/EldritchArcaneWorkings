@@ -1,6 +1,7 @@
 package net.fabricmc.example;
 
 import net.fabricmc.api.ClientModInitializer;
+import net.fabricmc.example.blocks.RodConstructionScreen;
 import net.fabricmc.example.blocks.RodConstructionScreenHandler;
 import net.fabricmc.example.entity.misc.AbstractParticleLeavingEntity;
 import net.fabricmc.example.entity.fire.AdvancedFireballEntity;
@@ -10,6 +11,9 @@ import net.fabricmc.example.item.model.ApprenticeStaffEntityModel;
 import net.fabricmc.example.item.model.NoviceStaffEntityModel;
 import net.fabricmc.example.networking.EAWEvents;
 import net.fabricmc.example.util.EAWAnimationHelper;
+import net.minecraft.client.gui.screen.ingame.HandledScreen;
+import net.minecraft.client.gui.screen.ingame.HandledScreens;
+import net.minecraft.util.registry.Registry;
 
 public class EAWClient implements ClientModInitializer {
 
@@ -34,6 +38,6 @@ public class EAWClient implements ClientModInitializer {
         EAWAnimationHelper.eventClient();
 
         //Screens
-        RodConstructionScreenHandler.register();
+        HandledScreens.register(ExampleMod.rodConstructionScreenHandlerType, RodConstructionScreen::new);
     }
 }

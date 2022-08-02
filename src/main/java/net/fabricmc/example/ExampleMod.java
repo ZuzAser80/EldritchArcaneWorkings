@@ -18,6 +18,7 @@ import net.minecraft.block.Material;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
 import net.minecraft.recipe.RecipeType;
+import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 
@@ -25,6 +26,7 @@ public class ExampleMod implements ModInitializer {
 
 	public static Block rodConstructionStation;
 	public static RecipeType<RodConstructionRecipe> rodConstructionType;
+	public static ScreenHandlerType<RodConstructionScreenHandler> rodConstructionScreenHandlerType;
 
 	@Override
 	public void onInitialize() {
@@ -45,5 +47,7 @@ public class ExampleMod implements ModInitializer {
 		Registry.register(Registry.RECIPE_SERIALIZER, new Identifier("eaw:rod_construction"),
 				RodConstructionRecipe.INSTANCE);
 		rodConstructionType = Registry.register(Registry.RECIPE_TYPE, new Identifier("eaw", "two_slot_recipe"), RodConstructionRecipe.Type.INSTANCE);
-    }
+		rodConstructionScreenHandlerType = Registry.register(Registry.SCREEN_HANDLER, new Identifier("eaw", "rod_construction_screen_handler"), new ScreenHandlerType<>(RodConstructionScreenHandler::new));
+
+	}
 }

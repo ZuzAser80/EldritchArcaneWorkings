@@ -2,6 +2,7 @@ package net.fabricmc.example.blocks;
 
 import net.fabricmc.example.ExampleMod;
 import net.minecraft.block.BlockState;
+import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.CraftingInventory;
@@ -9,6 +10,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.recipe.RecipeType;
 import net.minecraft.recipe.SmithingRecipe;
 import net.minecraft.screen.ForgingScreenHandler;
+import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.ScreenHandlerContext;
 import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.screen.slot.Slot;
@@ -20,24 +22,18 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 
 public class RodConstructionScreenHandler extends ForgingScreenHandler {
-    private final World world;
+    private World world;
     @Nullable
     private RodConstructionRecipe currentRecipe;
-    private final List<RodConstructionRecipe> recipes;
-
-    static ScreenHandlerType<RodConstructionScreenHandler> rodConstructionType;
-
-    public static void register() {
-        rodConstructionType = Registry.register(Registry.SCREEN_HANDLER, new Identifier("eaw", "rod_construction_screen_handler"), new ScreenHandlerType<>(RodConstructionScreenHandler::new));
-    }
+    private List<RodConstructionRecipe> recipes;
 
     public RodConstructionScreenHandler(int syncId, PlayerInventory playerInventory) {
         this(syncId, playerInventory, ScreenHandlerContext.EMPTY);
     }
 
     public RodConstructionScreenHandler(int syncId, PlayerInventory playerInventory, ScreenHandlerContext context) {
-        super(rodConstructionType, syncId, playerInventory, context);
-        this.world = playerInventory.player.world;
+        super(ExampleMod.rodConstructionScreenHandlerType, syncId, playerInventory, context);
+        world = playerInventory.player.world;
         this.recipes = this.world.getRecipeManager().listAllOfType(ExampleMod.rodConstructionType);
     }
 
@@ -46,7 +42,7 @@ public class RodConstructionScreenHandler extends ForgingScreenHandler {
     }
 
     protected boolean canTakeOutput(PlayerEntity player, boolean present) {
-        return this.currentRecipe != null && this.currentRecipe.matches((CraftingInventory) this.input, this.world);
+        return this.currentRecipe != null && this.currentRecipe.matches((CraftingInventory)input, this.world);
     }
 
     protected void onTakeOutput(PlayerEntity player, ItemStack stack) {
@@ -58,6 +54,7 @@ public class RodConstructionScreenHandler extends ForgingScreenHandler {
             world.syncWorldEvent(1044, pos, 0);
         });
     }
+
 
     private void decrementStack(int slot) {
         ItemStack itemStack = this.input.getStack(slot);
@@ -82,7 +79,17 @@ public class RodConstructionScreenHandler extends ForgingScreenHandler {
         return this.recipes.stream().anyMatch((recipe) -> recipe.testCrystal(stack));
     }
 
+    @Override
+    public ItemStack transferSlot(PlayerEntity player, int index) {
+        return null;
+    }
+
     public boolean canInsertIntoSlot(ItemStack stack, Slot slot) {
-        return slot.inventory != this.output && super.canInsertIntoSlot(stack, slot);
+        return super.canInsertIntoSlot(stack, slot);
+    }
+
+    @Override
+    public boolean canUse(PlayerEntity player) {
+        return false;
     }
 }
