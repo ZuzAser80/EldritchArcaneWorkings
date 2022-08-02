@@ -1,4 +1,4 @@
-package net.fabricmc.example.entity;
+package net.fabricmc.example.entity.fire;
 
 import net.minecraft.client.render.OverlayTexture;
 import net.minecraft.client.render.VertexConsumer;
@@ -11,17 +11,17 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3f;
 
-public class AdvancedSnowballEntityRenderer extends EntityRenderer<AdvancedSnowballEntity> {
+public class AdvancedFireballEntityRenderer extends EntityRenderer<AdvancedFireballEntity> {
 
     Identifier texture;
     AdvancedFireballEntityModel model = new AdvancedFireballEntityModel(AdvancedFireballEntityModel.getTexturedModelData().createModel());
 
-    public AdvancedSnowballEntityRenderer(EntityRendererFactory.Context context) {
+    public AdvancedFireballEntityRenderer(EntityRendererFactory.Context context) {
         super(context);
     }
 
     @Override
-    public void render(AdvancedSnowballEntity tridentEntity, float f, float g, MatrixStack matrixStack, VertexConsumerProvider vertexConsumerProvider, int i) {
+    public void render(AdvancedFireballEntity tridentEntity, float f, float g, MatrixStack matrixStack, VertexConsumerProvider vertexConsumerProvider, int i) {
         matrixStack.push();
         VertexConsumer vertexConsumer = ItemRenderer.getDirectItemGlintConsumer(vertexConsumerProvider, this.model.getLayer(this.getTexture(tridentEntity)), false, false);
 
@@ -33,7 +33,8 @@ public class AdvancedSnowballEntityRenderer extends EntityRenderer<AdvancedSnowb
     }
 
     @Override
-    public Identifier getTexture(AdvancedSnowballEntity entity) {
-        return new Identifier("eaw", "textures/entity/advanced_snowball_entity.png");
+    public Identifier getTexture(AdvancedFireballEntity entity) {
+        return new Identifier("eaw", "textures/entity/advanced_fireball_entity.png");
     }
+
 }

@@ -7,6 +7,7 @@ import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.event.player.UseItemCallback;
 import net.fabricmc.fabric.api.networking.v1.PacketSender;
+import net.fabricmc.fabric.mixin.client.keybinding.KeyCodeAccessor;
 import net.minecraft.client.option.KeyBinding;
 import net.minecraft.client.util.InputUtil;
 import net.minecraft.entity.player.PlayerInventory;
@@ -21,29 +22,73 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.util.registry.Registry;
+import org.checkerframework.checker.units.qual.K;
 import org.lwjgl.glfw.GLFW;
 
 import java.util.Objects;
 
 public class EAWEvents {
 
-    //public static KeyBinding switchSpell1;
-    //
-    //public static void registerSwitchSpell1Keybinding() {
-    //
-    //}
-    //
-    //public static void SpellSwitch1S2CPacket(MinecraftServer server, ServerPlayerEntity player, ServerPlayNetworkHandler handler, PacketByteBuf buffer, PacketSender sender) {
-    //    server.execute(() -> {
-    //        PlayerInventory i = player.getInventory();
-    //        if(i.getMainHandStack().getItem() instanceof AbstractMagicRodItem rodItem) {
-    //            rodItem.switchCurrentSpell();
-    //        }
-    //    });
-    //}
-    //
-    //public static Packet<?> createSpellSwitch1S2CPacket() {
-    //    PacketByteBuf buffer = new PacketByteBuf(Unpooled.buffer());
-    //    return ClientPlayNetworking.createC2SPacket(new Identifier("eaw", "switch_spell_1_packet"), buffer);
-    //}
+    public static KeyBinding switchSpell1;
+    public static KeyBinding switchSpell2;
+
+
+    public static void registerSwitchSpell1Keybinding() {
+        switchSpell1 = KeyBindingHelper.registerKeyBinding(
+                new KeyBinding(
+                        "key.eaw.change_spell_1",
+                        InputUtil.Type.KEYSYM,
+                        GLFW.GLFW_KEY_UP,
+                        "category.eaw.main"
+                )
+        );
+        ClientTickEvents.END_CLIENT_TICK.register(client -> {
+            if(switchSpell1.wasPressed()) {
+                client.getNetworkHandler().sendPacket(createSpellSwitch1S2CPacket());
+            }
+        });
+    }
+
+    public static void registerSwitchSpell2Keybinding() {
+        switchSpell2 = KeyBindingHelper.registerKeyBinding(
+                new KeyBinding(
+                        "key.eaw.change_spell_2",
+                        InputUtil.Type.KEYSYM,
+                        GLFW.GLFW_KEY_DOWN,
+                        "category.eaw.main"
+                )
+        );
+        ClientTickEvents.END_CLIENT_TICK.register(client -> {
+            if(switchSpell2.wasPressed()) {
+                client.getNetworkHandler().sendPacket(createSpellSwitch2S2CPacket());
+            }
+        });
+    }
+
+    public static void SpellSwitch1S2CPacket(MinecraftServer server, ServerPlayerEntity player, ServerPlayNetworkHandler handler, PacketByteBuf buffer, PacketSender sender) {
+        server.execute(() -> {
+            PlayerInventory i = player.getInventory();
+            if(i.getMainHandStack().getItem() instanceof AbstractMagicRodItem rodItem) {
+                rodItem.switchCurrentSpell();
+            }
+        });
+    }
+
+    public static void SpellSwitch2S2CPacket(MinecraftServer server, ServerPlayerEntity player, ServerPlayNetworkHandler handler, PacketByteBuf buffer, PacketSender sender) {
+        server.execute(() -> {
+            PlayerInventory i = player.getInventory();
+            if(i.getMainHandStack().getItem() instanceof AbstractMagicRodItem rodItem) {
+                rodItem.switchCurrentSpellDownwards();
+            }
+        });
+    }
+
+    public static Packet<?> createSpellSwitch1S2CPacket() {
+        PacketByteBuf buffer = new PacketByteBuf(Unpooled.buffer());
+        return ClientPlayNetworking.createC2SPacket(new Identifier("eaw", "switch_spell_1_packet"), buffer);
+    }
+    public static Packet<?> createSpellSwitch2S2CPacket() {
+        PacketByteBuf buffer = new PacketByteBuf(Unpooled.buffer());
+        return ClientPlayNetworking.createC2SPacket(new Identifier("eaw", "switch_spell_2_packet"), buffer);
+    }
 }

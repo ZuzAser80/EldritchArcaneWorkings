@@ -1,6 +1,6 @@
 package net.fabricmc.example.spell.spells;
 
-import net.fabricmc.example.entity.AdvancedFireballEntity;
+import net.fabricmc.example.entity.fire.AdvancedFireballEntity;
 import net.fabricmc.example.spell.Spell;
 import net.fabricmc.example.spell.SpellRank;
 import net.fabricmc.example.spell.SpellType;

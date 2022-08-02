@@ -1,4 +1,4 @@
-package net.fabricmc.example.entity;
+package net.fabricmc.example.entity.fire;
 
 import net.minecraft.client.model.*;
 import net.minecraft.client.render.VertexConsumer;

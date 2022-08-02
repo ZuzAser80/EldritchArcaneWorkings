@@ -54,6 +54,5 @@ public class ApprenticeStaffEntityModel extends AbstractStaffEntityModel {
     @Override
     public void render(MatrixStack matrices, VertexConsumer vertexConsumer, int light, int overlay, float red, float green, float blue, float alpha) {
         bb_main.render(matrices, vertexConsumer, light, overlay, red, green, blue, alpha);
-        crystal.render(matrices, vertexConsumer, light, overlay, red, green, blue, alpha);
     }
 }

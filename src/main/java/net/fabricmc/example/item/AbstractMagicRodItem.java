@@ -1,16 +1,13 @@
 package net.fabricmc.example.item;
 
-import net.fabricmc.example.entity.AdvancedFireballEntity;
 import net.fabricmc.example.spell.Spell;
 import net.fabricmc.example.spell.SpellRank;
 import net.fabricmc.example.spell.SpellType;
-import net.fabricmc.example.spell.spells.AdvancedFireballSpell;
-import net.fabricmc.example.spell.spells.AdvancedSnowballSpell;
-import net.fabricmc.example.spell.spells.LeapSpell;
+import net.fabricmc.example.spell.spells.*;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.world.World;
@@ -22,7 +19,6 @@ public class AbstractMagicRodItem extends Item {
 
     int maxManaCap, manaCount, maxSpellCount;
     SpellRank rank;
-    SpellType element;
     List<Spell> spellList = new LinkedList<>();
     public Spell currentSpell;
 
@@ -34,43 +30,48 @@ public class AbstractMagicRodItem extends Item {
         }
         rank = rodRank;
         this.maxSpellCount = maxSpellCount;
-        currentSpell = new AdvancedFireballSpell();
-    }
-    public AbstractMagicRodItem(Settings settings, int maxManaCapacity, SpellRank rodRank, SpellType typeToDiscountMana) {
-        super(settings);
-        this.maxManaCap = maxManaCapacity;
-        manaCount = maxManaCapacity;
-        rank = rodRank;
-        element = typeToDiscountMana;
+        spellList.add(new LeapSpell());
+        spellList.add(new AdvancedFireballSpell());
+        spellList.add(new AdvancedSnowballSpell());
+        spellList.add(new FlameSpell());
     }
 
-    /*public int getCurrentSpellIndex() {
+    public int getCurrentSpellIndex() {
         return spellList.indexOf(currentSpell);
     }
 
     public void switchCurrentSpell() {
-        currentSpell = spellList.get(this.getCurrentSpellIndex() + 1);
+        if(this.getCurrentSpellIndex() < (spellList.size() - 1)) {
+            currentSpell = spellList.get(this.getCurrentSpellIndex() + 1);
+        } else {
+            currentSpell = spellList.get(0);
+        }
     }
 
     public void switchCurrentSpellDownwards() {
-        currentSpell = spellList.get(this.getCurrentSpellIndex() - 1);
-    }*/
+        if(getCurrentSpellIndex() > 0) {
+            currentSpell = spellList.get(this.getCurrentSpellIndex() - 1);
+        } else {
+            currentSpell = spellList.get(spellList.size() - 1);
+        }
+    }
+
+    @Override
+    public void inventoryTick(ItemStack stack, World world, Entity entity, int slot, boolean selected) {
+        if(stack.isOf(this) && stack.getNbt() == null) {
+            stack.getOrCreateNbt().putFloat("manaCount", manaCount);
+            stack.getOrCreateNbt().putString("rod", "default");
+            stack.getOrCreateNbt().putString("crystal", "default");
+        }
+    }
 
     @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
         if(user.getMainHandStack().getOrCreateNbt().getFloat("maxManaCap") == 0) {
             user.getMainHandStack().getOrCreateNbt().putFloat("maxManaCap", maxManaCap);
         }
-        if(user.getMainHandStack().isOf(this) && !world.isClient) {
+        if(user.getMainHandStack().isOf(this) && !world.isClient && currentSpell != null) {
             if(manaCount > currentSpell.getManaCost()) {
-                if(currentSpell instanceof AdvancedFireballSpell) {
-                    System.out.println("sex");
-                    currentSpell = new AdvancedSnowballSpell();
-                } else if(currentSpell instanceof LeapSpell) {
-                    currentSpell = new AdvancedFireballSpell();
-                } else if(currentSpell instanceof AdvancedSnowballSpell) {
-                    currentSpell = new LeapSpell();
-                }
                 currentSpell.cast(user, world);
                 manaCount -= currentSpell.getManaCost();
                 user.getMainHandStack().getOrCreateNbt().putFloat("manaCount", manaCount);
@@ -78,6 +79,8 @@ public class AbstractMagicRodItem extends Item {
                 user.getMainHandStack().getOrCreateNbt().putFloat("manaCount", maxManaCap);
                 manaCount = maxManaCap;
             }
+        } else if(currentSpell == null) {
+            currentSpell = spellList.get(0);
         }
         return TypedActionResult.success(user.getMainHandStack(), true);
     }

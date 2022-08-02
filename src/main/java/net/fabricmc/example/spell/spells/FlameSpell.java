@@ -1,21 +1,19 @@
 package net.fabricmc.example.spell.spells;
 
-import net.fabricmc.example.entity.water.AdvancedSnowballEntity;
+import net.fabricmc.example.entity.misc.AbstractParticleLeavingEntity;
 import net.fabricmc.example.spell.Spell;
 import net.fabricmc.example.spell.SpellRank;
 import net.fabricmc.example.spell.SpellType;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.particle.ParticleTypes;
 import net.minecraft.world.World;
 
-public class AdvancedSnowballSpell extends Spell {
-
-    public AdvancedSnowballSpell() {
-        super(SpellType.WATER, SpellRank.APPRENTICE, 20, 10);
+public class FlameSpell extends Spell {
+    public FlameSpell() {
+        super(SpellType.FIRE, SpellRank.NOVICE, 0, 1);
     }
-
-    @Override
     public void cast(PlayerEntity user, World world) {
-        AdvancedSnowballEntity fireballEntity = new AdvancedSnowballEntity(world);
+        AbstractParticleLeavingEntity fireballEntity = new AbstractParticleLeavingEntity(world, ParticleTypes.FLAME, true);
         fireballEntity.setPosition(user.getX(), user.getY() + 0.5, user.getZ());
         fireballEntity.setVelocity(user, user.getPitch(), user.getYaw(), 0, 1, 1);
         fireballEntity.setNoGravity(true);

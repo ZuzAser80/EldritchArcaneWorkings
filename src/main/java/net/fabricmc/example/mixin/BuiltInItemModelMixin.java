@@ -32,7 +32,7 @@ import java.util.Random;
 @Mixin(BuiltinModelItemRenderer.class)
 public class BuiltInItemModelMixin {
 
-    //hollow thing to `helper != null` was always true
+    //hollow thing to make `helper != null` always true
     EAWAnimationHelper helper = EAWAnimationHelper.begin(0, 0, 0, 0);
 
     @Final @Shadow private EntityModelLoader entityModelLoader;
@@ -75,7 +75,7 @@ public class BuiltInItemModelMixin {
         if(model != null) {
             if (!helper.getIsPlaying()) {
                 helper = EAWAnimationHelper.begin(1800, 0.1f, 0.1f, 0.1f);
-            } else if(stack.getOrCreateNbt().getFloat("manaCount") > 0) {
+            } else {
                 if(model.rotateX()) {
                     model.getCrystal().pitch = helper.getOffset(Direction.Axis.X);
                 }
@@ -87,6 +87,10 @@ public class BuiltInItemModelMixin {
                 }
             }
             VertexConsumer vertexConsumer = ItemRenderer.getDirectItemGlintConsumer(vertexConsumers, this.noviceStaffModel.getLayer(textureId), true, false);
+            if(model == apprenticeStaffModel) {
+                VertexConsumer crystalVertexConsumer = ItemRenderer.getDirectItemGlintConsumer(vertexConsumers, this.noviceStaffModel.getLayer(new Identifier("eaw", "textures/entity/crystal/apprentice_staff_green_crystal.png")), true, false);
+                model.getCrystal().render(matrices, crystalVertexConsumer, light, overlay, 1, 1, 1, 1);
+            }
             model.render(matrices, vertexConsumer, light, overlay, 1.0f, 1.0f, 1.0f, 1.0f);
         }
     }

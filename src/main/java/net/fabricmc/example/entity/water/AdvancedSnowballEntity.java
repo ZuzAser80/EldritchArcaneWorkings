@@ -1,4 +1,4 @@
-package net.fabricmc.example.entity;
+package net.fabricmc.example.entity.water;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -20,12 +20,9 @@ import net.minecraft.util.Identifier;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.HitResult;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.World;
-import net.minecraft.world.explosion.Explosion;
 
-import java.util.Iterator;
 import java.util.Random;
 
 public class AdvancedSnowballEntity extends PersistentProjectileEntity {
@@ -77,10 +74,19 @@ public class AdvancedSnowballEntity extends PersistentProjectileEntity {
 
     protected void setSnow(World world, BlockPos pos) {
         for (BlockPos blockPos2 : BlockPos.iterate(pos.north(4).east(4).up(4), pos.south(4).west(4).down(4))) {
-            if ((world.getBlockState(blockPos2).isOf(Blocks.AIR) || world.getBlockState(blockPos2).isOf(Blocks.CAVE_AIR) || world.getBlockState(blockPos2).isOf(Blocks.VOID_AIR)) && blockPos2.isWithinDistance(pos, 4) && world.getBlockState(pos).isOf(Blocks.FIRE) && world.getBlockState(pos).isOf(Blocks.SOUL_FIRE)) {
-                world.setBlockState(blockPos2, Blocks.POWDER_SNOW.getDefaultState());
-            } else if(blockPos2.isWithinDistance(pos, 4) && world.getBlockState(pos).isOf(Blocks.WATER)) {
-                world.setBlockState(blockPos2, Blocks.ICE.getDefaultState());
+            Random rnd = new Random();
+            int random = rnd.nextInt(0, 2);
+            if(blockPos2.isWithinDistance(pos, 4)) {
+                if(world.getBlockState(blockPos2).isOf(Blocks.WATER)) {
+                    world.setBlockState(blockPos2, Blocks.ICE.getDefaultState());
+                }
+                if ((world.getBlockState(blockPos2).isOf(Blocks.AIR) || world.getBlockState(blockPos2).isOf(Blocks.CAVE_AIR) || world.getBlockState(blockPos2).isOf(Blocks.VOID_AIR) || world.getBlockState(pos).isOf(Blocks.FIRE) || world.getBlockState(pos).isOf(Blocks.SOUL_FIRE))) {
+                    if(random <= 1) {
+                        world.setBlockState(blockPos2, Blocks.POWDER_SNOW.getDefaultState());
+                    } else {
+                        world.setBlockState(blockPos2, Blocks.SNOW_BLOCK.getDefaultState());
+                    }
+                }
             }
         }
     }

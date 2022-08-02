@@ -3,11 +3,9 @@
   "gui_light": "front",
   "display" : {
     "thirdperson_righthand": {
-      "translation": [0, 5.5, 0],
       "scale": [1.5, 1.5, 1.5]
     },
     "thirdperson_lefthand": {
-      "translation": [0, 5.5, 0],
       "scale": [1.5, 1.5, 1.5]
     },
     "firstperson_righthand": {
@@ -21,8 +19,7 @@
       "translation": [0, -3, 0]
     },
     "gui": {
-      "rotation": [-90, 45, 90],
-      "translation": [-1, 1, 0]
+      "rotation": [-90, 45, 90]
     }
   }
 }

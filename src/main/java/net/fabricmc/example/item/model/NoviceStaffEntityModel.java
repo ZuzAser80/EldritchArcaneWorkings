@@ -2,16 +2,12 @@ package net.fabricmc.example.item.model;
 
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.fabricmc.example.entity.AdvancedFireballEntityModel;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityModelLayerRegistry;
 import net.minecraft.client.model.*;
-import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.VertexConsumer;
 import net.minecraft.client.render.entity.model.EntityModelLayer;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.Identifier;
-
-import java.util.function.Function;
 
 public class NoviceStaffEntityModel extends AbstractStaffEntityModel {
     private final ModelPart crystal;
