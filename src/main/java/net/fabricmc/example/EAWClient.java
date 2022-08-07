@@ -1,19 +1,16 @@
 package net.fabricmc.example;
 
 import net.fabricmc.api.ClientModInitializer;
-import net.fabricmc.example.blocks.RodConstructionScreen;
-import net.fabricmc.example.blocks.RodConstructionScreenHandler;
-import net.fabricmc.example.entity.misc.AbstractParticleLeavingEntity;
+import net.fabricmc.example.blocks.screen.MagicTableScreen;
 import net.fabricmc.example.entity.fire.AdvancedFireballEntity;
+import net.fabricmc.example.entity.misc.AbstractParticleLeavingEntity;
 import net.fabricmc.example.entity.water.AdvancedSnowballEntity;
 import net.fabricmc.example.entity.water.IceShieldEntity;
 import net.fabricmc.example.item.model.ApprenticeStaffEntityModel;
 import net.fabricmc.example.item.model.NoviceStaffEntityModel;
 import net.fabricmc.example.networking.EAWEvents;
 import net.fabricmc.example.util.EAWAnimationHelper;
-import net.minecraft.client.gui.screen.ingame.HandledScreen;
-import net.minecraft.client.gui.screen.ingame.HandledScreens;
-import net.minecraft.util.registry.Registry;
+import net.fabricmc.fabric.api.client.screenhandler.v1.ScreenRegistry;
 
 public class EAWClient implements ClientModInitializer {
 
@@ -37,7 +34,7 @@ public class EAWClient implements ClientModInitializer {
         //Animation Helper util
         EAWAnimationHelper.eventClient();
 
-        //Screens
-        HandledScreens.register(ExampleMod.rodConstructionScreenHandlerType, RodConstructionScreen::new);
+        //Screen(s)
+        ScreenRegistry.register(ExampleMod.magicTableScreenHandler, MagicTableScreen::new);
     }
 }

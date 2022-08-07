@@ -1,0 +1,6 @@
+{
+  "parent": "eaw:item/crystal",
+  "textures": {
+    "0": "eaw:item/magic_crystal"
+  }
+}

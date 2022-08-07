@@ -1,0 +1,55 @@
+{
+	"credit": "Made with Blockbench By ZZ",
+	"textures": {
+		"0": "eaw:item/purple_crystal"
+	},
+	"elements": [
+		{
+			"from": [6.5, 0, 6.5],
+			"to": [9.5, 3, 9.5],
+			"shade": false,
+			"rotation": {"angle": 0, "axis": "y", "origin": [8, 1.5, 8]},
+			"faces": {
+				"north": {"uv": [6, 3, 3, 6], "texture": "#0"},
+				"east": {"uv": [9, 3, 6, 6], "texture": "#0"},
+				"south": {"uv": [12, 3, 9, 6], "texture": "#0"},
+				"west": {"uv": [3, 3, 0, 6], "texture": "#0"},
+				"up": {"uv": [3, 3, 6, 0], "texture": "#0"},
+				"down": {"uv": [6, 0, 9, 3], "texture": "#0"}
+			}
+		}
+	],
+	"display": {
+		"thirdperson_righthand": {
+			"translation": [0, 9, 0],
+			"scale": [1.5, 1.5, 1.5]
+		},
+		"thirdperson_lefthand": {
+			"translation": [0, 9, 0],
+			"scale": [1.5, 1.5, 1.5]
+		},
+		"firstperson_righthand": {
+			"rotation": [0, 45, 0],
+			"translation": [0, 9, 0],
+			"scale": [1.5, 1.5, 1.5]
+		},
+		"firstperson_lefthand": {
+			"rotation": [0, -45, 0],
+			"translation": [0, 9, 0],
+			"scale": [1.5, 1.5, 1.5]
+		},
+		"ground": {
+			"translation": [0, 5.5, 0]
+		},
+		"gui": {
+			"rotation": [-180, 0, -135],
+			"translation": [6.75, 7, 0],
+			"scale": [1.5, 1.5, 1.5]
+		},
+		"fixed": {
+			"rotation": [0, 0, 45],
+			"translation": [-6.75, 7.25, 0],
+			"scale": [1.5, 1.5, 1.5]
+		}
+	}
+}

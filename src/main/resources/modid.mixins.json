@@ -7,7 +7,8 @@
   ],
   "client": [
     "GameHudMixin",
-    "BuiltInItemModelMixin"
+    "BuiltInItemModelMixin",
+    "CraftingScreenHandlerMixin"
   ],
   "injectors": {
     "defaultRequire": 1

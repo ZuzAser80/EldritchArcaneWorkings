@@ -1,0 +1,6 @@
+{
+  "parent": "eaw:item/crystal",
+  "textures": {
+    "0": "eaw:item/light_gray_crystal"
+  }
+}

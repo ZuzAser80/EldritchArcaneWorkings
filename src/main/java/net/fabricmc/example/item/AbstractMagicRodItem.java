@@ -8,8 +8,11 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.tag.TagKey;
 import net.minecraft.util.Hand;
+import net.minecraft.util.Identifier;
 import net.minecraft.util.TypedActionResult;
+import net.minecraft.util.registry.Registry;
 import net.minecraft.world.World;
 
 import java.util.LinkedList;
@@ -30,10 +33,6 @@ public class AbstractMagicRodItem extends Item {
         }
         rank = rodRank;
         this.maxSpellCount = maxSpellCount;
-        spellList.add(new LeapSpell());
-        spellList.add(new AdvancedFireballSpell());
-        spellList.add(new AdvancedSnowballSpell());
-        spellList.add(new FlameSpell());
     }
 
     public int getCurrentSpellIndex() {
@@ -60,8 +59,8 @@ public class AbstractMagicRodItem extends Item {
     public void inventoryTick(ItemStack stack, World world, Entity entity, int slot, boolean selected) {
         if(stack.isOf(this) && stack.getNbt() == null) {
             stack.getOrCreateNbt().putFloat("manaCount", manaCount);
-            stack.getOrCreateNbt().putString("rod", "default");
-            stack.getOrCreateNbt().putString("crystal", "default");
+            stack.getOrCreateNbt().putString("rod", "");
+            stack.getOrCreateNbt().putString("crystal", "crystal");
         }
     }
 
@@ -79,7 +78,7 @@ public class AbstractMagicRodItem extends Item {
                 user.getMainHandStack().getOrCreateNbt().putFloat("manaCount", maxManaCap);
                 manaCount = maxManaCap;
             }
-        } else if(currentSpell == null) {
+        } else if(currentSpell == null && spellList.size() > 0) {
             currentSpell = spellList.get(0);
         }
         return TypedActionResult.success(user.getMainHandStack(), true);

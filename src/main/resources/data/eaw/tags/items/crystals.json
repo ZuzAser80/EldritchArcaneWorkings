@@ -1,6 +1,22 @@
 {
+  "replace": false,
   "values": [
-    "minecraft:candle",
-    "minecraft:red_candle"
+    "eaw:crystal",
+    "eaw:white_crystal",
+    "eaw:orange_crystal",
+    "eaw:magenta_crystal",
+    "eaw:light_blue_crystal",
+    "eaw:yellow_crystal",
+    "eaw:lime_crystal",
+    "eaw:pink_crystal",
+    "eaw:gray_crystal",
+    "eaw:light_gray_crystal",
+    "eaw:cyan_crystal",
+    "eaw:purple_crystal",
+    "eaw:blue_crystal",
+    "eaw:brown_crystal",
+    "eaw:green_crystal",
+    "eaw:red_crystal",
+    "eaw:black_crystal"
   ]
 }
