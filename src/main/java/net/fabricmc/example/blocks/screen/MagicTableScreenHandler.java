@@ -44,27 +44,30 @@ public class MagicTableScreenHandler extends ScreenHandler {
         //The player playerInventory
         for (m = 0; m < 3; ++m) {
             for (l = 0; l < 9; ++l) {
-                this.addSlot(new Slot(playerInventory, l + m * 9 + 9, 8 + l * 18, 112 + m * 18));
+                this.addSlot(new Slot(playerInventory, l + m * 9 + 9, 8 + l * 18, 84 + m * 18));
             }
         }
         //The player Hotbar
-        for(int i = 0; i < 9; ++i) {
-            this.addSlot(new Slot(playerInventory, i, 8 + i * 18, 170));
+        for (m = 0; m < 9; ++m) {
+            this.addSlot(new Slot(playerInventory, m, 8 + m * 18, 142));
         }
-    }
 
-    public MagicTableScreenHandler(int i, PlayerInventory playerInventory) {
-        this(i, playerInventory, ScreenHandlerContext.EMPTY);
     }
 
     @Override
-    public ItemStack transferSlot(PlayerEntity player, int index) {
+    public boolean canUse(PlayerEntity player) {
+        return this.inventory.canPlayerUse(player);
+    }
+
+    // Shift + Player Inv Slot
+    @Override
+    public ItemStack transferSlot(PlayerEntity player, int invSlot) {
         ItemStack newStack = ItemStack.EMPTY;
-        Slot slot = this.slots.get(index);
-        if (slot != null && slot.hasStack()) {
+        Slot slot = this.slots.get(invSlot);
+        if (slot.hasStack()) {
             ItemStack originalStack = slot.getStack();
             newStack = originalStack.copy();
-            if (index < this.inventory.size()) {
+            if (invSlot < this.inventory.size()) {
                 if (!this.insertItem(originalStack, this.inventory.size(), this.slots.size(), true)) {
                     return ItemStack.EMPTY;
                 }
@@ -82,8 +85,7 @@ public class MagicTableScreenHandler extends ScreenHandler {
         return newStack;
     }
 
-    @Override
-    public boolean canUse(PlayerEntity player) {
-        return this.inventory.canPlayerUse(player);
+    public MagicTableScreenHandler(int i, PlayerInventory playerInventory) {
+        this(i, playerInventory, ScreenHandlerContext.EMPTY);
     }
 }
