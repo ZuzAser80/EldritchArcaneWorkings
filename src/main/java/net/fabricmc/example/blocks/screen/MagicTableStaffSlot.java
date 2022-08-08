@@ -1,5 +1,6 @@
 package net.fabricmc.example.blocks.screen;
 
+import net.fabricmc.example.item.AbstractMagicRodItem;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.screen.slot.Slot;
@@ -24,6 +25,6 @@ public class MagicTableStaffSlot extends Slot {
     }
 
     public static boolean isStaff(ItemStack stack) {
-        return stack.isIn(TagKey.of(Registry.ITEM_KEY, new Identifier("eaw", "rods")));
+        return stack.getItem() instanceof AbstractMagicRodItem;
     }
 }

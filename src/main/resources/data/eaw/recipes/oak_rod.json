@@ -2,17 +2,19 @@
   "type": "minecraft:crafting_shaped",
   "key": {
     "C": {
-      "tag": "eaw:crystals"
+      "item": "minecraft:oak_planks"
     },
     "S": {
-      "tag": "eaw:rods"
+      "item": "minecraft:stick"
     }
   },
   "pattern": [
-    "C",
+    "CCC",
+    "S",
     "S"
   ],
   "result": {
-    "item": "eaw:apprentice_staff"
+    "item": "eaw:oak_rod",
+    "count": 1
   }
 }

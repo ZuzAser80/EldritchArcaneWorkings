@@ -1,7 +1,14 @@
 {
   "replace": false,
-  "values" : [
-    "eaw:novice_staff",
-    "eaw:apprentice_staff"
+  "values": [
+    "eaw:oak_rod",
+    "eaw:spruce_rod",
+    "eaw:dark_oak_rod",
+    "eaw:birch_rod",
+    "eaw:jungle_rod",
+    "eaw:acacia_rod",
+    "eaw:mangrove_rod",
+    "eaw:crimson_rod",
+    "eaw:warped_rod"
   ]
 }

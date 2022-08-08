@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "C": {
+      "item": "minecraft:mangrove_planks"
+    },
+    "S": {
+      "item": "minecraft:stick"
+    }
+  },
+  "pattern": [
+    "CCC",
+    "S",
+    "S"
+  ],
+  "result": {
+    "item": "eaw:mangrove_rod",
+    "count": 1
+  }
+}

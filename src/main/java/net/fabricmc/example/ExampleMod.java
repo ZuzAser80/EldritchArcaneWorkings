@@ -57,6 +57,16 @@ public class ExampleMod implements ModInitializer {
 		Registry.register(Registry.ITEM, new Identifier("eaw", "purple_crystal"), new Item(new Item.Settings().maxCount(1)));
 		Registry.register(Registry.ITEM, new Identifier("eaw", "brown_crystal"), new Item(new Item.Settings().maxCount(1)));
 
+		Registry.register(Registry.ITEM, new Identifier("eaw", "oak_rod"), new Item(new Item.Settings().maxCount(1)));
+		Registry.register(Registry.ITEM, new Identifier("eaw", "spruce_rod"), new Item(new Item.Settings().maxCount(1)));
+		Registry.register(Registry.ITEM, new Identifier("eaw", "birch_rod"), new Item(new Item.Settings().maxCount(1)));
+		Registry.register(Registry.ITEM, new Identifier("eaw", "jungle_rod"), new Item(new Item.Settings().maxCount(1)));
+		Registry.register(Registry.ITEM, new Identifier("eaw", "acacia_rod"), new Item(new Item.Settings().maxCount(1)));
+		Registry.register(Registry.ITEM, new Identifier("eaw", "dark_oak_rod"), new Item(new Item.Settings().maxCount(1)));
+		Registry.register(Registry.ITEM, new Identifier("eaw", "crimson_rod"), new Item(new Item.Settings().maxCount(1)));
+		Registry.register(Registry.ITEM, new Identifier("eaw", "warped_rod"), new Item(new Item.Settings().maxCount(1)));
+		Registry.register(Registry.ITEM, new Identifier("eaw", "mangrove_rod"), new Item(new Item.Settings().maxCount(1)));
+
 		Registry.register(Registry.ITEM, new Identifier("eaw", "flame_spell_book"), new AbstractSpellBookItem(new Item.Settings().maxCount(1), new FlameSpell()));
 
 		AdvancedFireballEntity.registry();

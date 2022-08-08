@@ -3,27 +3,19 @@ package net.fabricmc.example.blocks.screen;
 import net.fabricmc.example.ExampleMod;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.inventory.Inventory;
 import net.minecraft.inventory.SimpleInventory;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.ScreenHandlerContext;
-import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.screen.slot.Slot;
 import net.minecraft.screen.slot.SlotActionType;
-import org.jetbrains.annotations.Nullable;
 
 public class MagicTableScreenHandler extends ScreenHandler {
 
-    SimpleInventory inventory = new SimpleInventory(3);
+    SimpleInventory inventory = new SimpleInventory(9);
+
     protected ScreenHandlerContext context;
 
-
-    public MagicTableScreenHandler(@Nullable ScreenHandlerType<?> type, int syncId, PlayerInventory playerInventory, ScreenHandlerContext context) {
-        super(type, syncId);
-    }
 
     public MagicTableScreenHandler(int syncId, PlayerInventory playerInventory, ScreenHandlerContext screenHandlerContext) {
         super(ExampleMod.magicTableScreenHandler, syncId);
@@ -41,15 +33,22 @@ public class MagicTableScreenHandler extends ScreenHandler {
         this.addSlot(new MagicTableStaffSlot(this, inventory, 0, 80, 81 - 46));
         this.addSlot(new MagicTableBookSlot(this, inventory, 1, 55, -9 + 88));
         this.addSlot(new MagicTableBookSlot(this, inventory, 2, 34, -9 + (88 - 20)));
+        /*this.addSlot(new MagicTableBookSlot(this, inventory, 3, 55, -9 + 88));
+        this.addSlot(new MagicTableBookSlot(this, inventory, 4, 34, -9 + (88 - 20)));
+        this.addSlot(new MagicTableBookSlot(this, inventory, 5, 55, -9 + 88));
+        this.addSlot(new MagicTableBookSlot(this, inventory, 6, 34, -9 + (88 - 20)));
+        this.addSlot(new MagicTableBookSlot(this, inventory, 7, 55, -9 + 88));
+        this.addSlot(new MagicTableBookSlot(this, inventory, 8, 34, -9 + (88 - 20)));*/
+
         //The player playerInventory
         for (m = 0; m < 3; ++m) {
             for (l = 0; l < 9; ++l) {
-                this.addSlot(new Slot(playerInventory, l + m * 9 + 9, 8 + l * 18, 84 + m * 18));
+                this.addSlot(new Slot(playerInventory, l + m * 9 + 9, 8 + l * 18, 119 + m * 18));
             }
         }
         //The player Hotbar
         for (m = 0; m < 9; ++m) {
-            this.addSlot(new Slot(playerInventory, m, 8 + m * 18, 142));
+            this.addSlot(new Slot(playerInventory, m, 8 + m * 18, 197));
         }
 
     }
@@ -57,6 +56,14 @@ public class MagicTableScreenHandler extends ScreenHandler {
     @Override
     public boolean canUse(PlayerEntity player) {
         return this.inventory.canPlayerUse(player);
+    }
+
+    @Override
+    public void onSlotClick(int slotIndex, int button, SlotActionType actionType, PlayerEntity player) {
+        if(slotIndex >= 36 && slotIndex <= 44 && actionType == SlotActionType.THROW) {
+            actionType = SlotActionType.PICKUP;
+        }
+        super.onSlotClick(slotIndex, button, actionType, player);
     }
 
     // Shift + Player Inv Slot

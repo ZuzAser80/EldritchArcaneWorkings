@@ -2,17 +2,19 @@
   "type": "minecraft:crafting_shaped",
   "key": {
     "C": {
-      "tag": "eaw:crystals"
+      "item": "minecraft:crimson_planks"
     },
     "S": {
-      "tag": "eaw:rods"
+      "item": "minecraft:stick"
     }
   },
   "pattern": [
-    "C",
+    "CCC",
+    "S",
     "S"
   ],
   "result": {
-    "item": "eaw:apprentice_staff"
+    "item": "eaw:crimson_rod",
+    "count": 1
   }
 }

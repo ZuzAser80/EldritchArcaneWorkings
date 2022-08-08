@@ -43,13 +43,17 @@ public class CraftingScreenHandlerMixin {
 
             if(itemStack.getItem() instanceof AbstractMagicRodItem) {
                 String crystalName = "";
+                String rodName = "";
                 for(int i = 0; i <= 9; i++) {
                     if(craftingInventory.getStack(i).isIn(TagKey.of(Registry.ITEM_KEY, new Identifier("eaw", "crystals")))) {
                         crystalName = craftingInventory.getStack(i).getTranslationKey().replaceFirst("item.eaw.", "");
                         crystalName = crystalName.replaceFirst("_crystal", "");
+                    } else if(craftingInventory.getStack(i).isIn(TagKey.of(Registry.ITEM_KEY, new Identifier("eaw", "rods")))) {
+                        rodName = craftingInventory.getStack(i).getTranslationKey().replaceFirst("item.eaw.", "");
                     }
                 }
                 itemStack.getOrCreateNbt().putString("crystal", crystalName);
+                itemStack.getOrCreateNbt().putString("rod", rodName);
                 resultInventory.setStack(0, itemStack);
                 handler.setPreviousTrackedSlot(0, itemStack);
                 serverPlayerEntity.networkHandler.sendPacket(new ScreenHandlerSlotUpdateS2CPacket(handler.syncId, handler.nextRevision(), 0, itemStack));

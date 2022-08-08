@@ -59,7 +59,7 @@ public class AbstractMagicRodItem extends Item {
     public void inventoryTick(ItemStack stack, World world, Entity entity, int slot, boolean selected) {
         if(stack.isOf(this) && stack.getNbt() == null) {
             stack.getOrCreateNbt().putFloat("manaCount", manaCount);
-            stack.getOrCreateNbt().putString("rod", "");
+            stack.getOrCreateNbt().putString("rod", "oak_rod");
             stack.getOrCreateNbt().putString("crystal", "crystal");
         }
     }

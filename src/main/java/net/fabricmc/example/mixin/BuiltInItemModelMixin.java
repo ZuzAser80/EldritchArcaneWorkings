@@ -86,15 +86,16 @@ public class BuiltInItemModelMixin {
                     model.getCrystal().roll = helper.getOffset(Direction.Axis.Z);
                 }
             }
-            VertexConsumer vertexConsumer = ItemRenderer.getDirectItemGlintConsumer(vertexConsumers, this.noviceStaffModel.getLayer(textureId), true, false);
             if(stack.getOrCreateNbt() != null) {
                 if (apprenticeStaffModel.equals(model)) {
                     String textureCrystal = "textures/entity/crystal/apprentice/" + stack.getOrCreateNbt().getString("crystal") + "_crystal_entity.png";
                     VertexConsumer crystalVertexConsumer = ItemRenderer.getDirectItemGlintConsumer(vertexConsumers, this.noviceStaffModel.getLayer(new Identifier("eaw", textureCrystal)), true, false);
                     model.getCrystal().render(matrices, crystalVertexConsumer, light, overlay, 1, 1, 1, 1);
+                    String textureRod = "textures/entity/rod/" + stack.getOrCreateNbt().getString("rod") + ".png";
+                    VertexConsumer vertexConsumer = ItemRenderer.getDirectItemGlintConsumer(vertexConsumers, this.noviceStaffModel.getLayer(new Identifier("eaw", textureRod)), true, false);
+                    model.render(matrices, vertexConsumer, light, overlay, 1.0f, 1.0f, 1.0f, 1.0f);
                 }
             }
-            model.render(matrices, vertexConsumer, light, overlay, 1.0f, 1.0f, 1.0f, 1.0f);
         }
     }
 }
