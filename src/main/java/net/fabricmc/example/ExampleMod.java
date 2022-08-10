@@ -3,7 +3,8 @@ package net.fabricmc.example;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.example.blocks.MagicTableBlock;
 import net.fabricmc.example.blocks.MagicTableBlockEntity;
-import net.fabricmc.example.blocks.screen.MagicTableScreenHandler;
+import net.fabricmc.example.blocks.MagicTableScreen;
+import net.fabricmc.example.blocks.MagicTableScreenHandler;
 import net.fabricmc.example.entity.fire.AdvancedFireballEntity;
 import net.fabricmc.example.entity.misc.AbstractParticleLeavingEntity;
 import net.fabricmc.example.entity.water.AdvancedSnowballEntity;
@@ -17,27 +18,31 @@ import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.fabricmc.fabric.api.object.builder.v1.block.entity.FabricBlockEntityTypeBuilder;
 import net.fabricmc.fabric.api.screenhandler.v1.ScreenHandlerRegistry;
-import net.minecraft.block.Blocks;
+import net.minecraft.block.AbstractBlock;
+import net.minecraft.block.Block;
 import net.minecraft.block.Material;
+import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityType;
-import net.minecraft.block.entity.DispenserBlockEntity;
-import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
+import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.Rarity;
 import net.minecraft.util.registry.Registry;
 
 public class ExampleMod implements ModInitializer {
 
-	public static MagicTableBlock magicTable;
+	public static BlockEntityType<MagicTableBlockEntity> magicTableEntity;
+	public static Block magicTable;
 	public static ScreenHandlerType<MagicTableScreenHandler> magicTableScreenHandler;
-	public static BlockEntityType<MagicTableBlockEntity> magicTableType;
 
 	@Override
 	public void onInitialize() {
 
 		Registry.register(Registry.ITEM, new Identifier("eaw", "novice_staff"), new AbstractMagicRodItem(new Item.Settings().maxCount(1), 20, SpellRank.NOVICE, 3));
 		Registry.register(Registry.ITEM, new Identifier("eaw", "apprentice_staff"), new AbstractMagicRodItem(new Item.Settings().maxCount(1), 50, SpellRank.APPRENTICE, 5));
+		Registry.register(Registry.ITEM, new Identifier("eaw", "average_staff"), new AbstractMagicRodItem(new Item.Settings().maxCount(1).rarity(Rarity.UNCOMMON), 75, SpellRank.AVERAGE, 5));
+		Registry.register(Registry.ITEM, new Identifier("eaw", "master_staff"), new AbstractMagicRodItem(new Item.Settings().maxCount(1).rarity(Rarity.RARE), 75, SpellRank.MASTER, 7));
 
 		Registry.register(Registry.ITEM, new Identifier("eaw", "crystal"), new Item(new Item.Settings().maxCount(1)));
 		Registry.register(Registry.ITEM, new Identifier("eaw", "red_crystal"), new Item(new Item.Settings().maxCount(1)));
@@ -77,11 +82,10 @@ public class ExampleMod implements ModInitializer {
 		ServerPlayNetworking.registerGlobalReceiver(new Identifier("eaw", "switch_spell_1_packet"), EAWEvents::SpellSwitch1S2CPacket);
         ServerPlayNetworking.registerGlobalReceiver(new Identifier("eaw", "switch_spell_2_packet"), EAWEvents::SpellSwitch2S2CPacket);
 
-		magicTable = Registry.register(Registry.BLOCK, new Identifier("eaw", "magic_table_block"), new MagicTableBlock(FabricBlockSettings.of(Material.METAL).strength(4.0f)));
-		Registry.register(Registry.ITEM, new Identifier("eaw", "magic_table_item"), new BlockItem(magicTable, new Item.Settings()));
+        magicTable = Registry.register(Registry.BLOCK, new Identifier("eaw", "magic_table_block"), new MagicTableBlock(AbstractBlock.Settings.of(Material.CACTUS)));
 
-		magicTableScreenHandler = ScreenHandlerRegistry.registerSimple(new Identifier("eaw", "magic_table_screen_handler"), MagicTableScreenHandler::new);
+        magicTableEntity = Registry.register(Registry.BLOCK_ENTITY_TYPE, new Identifier("eaw", "magic_table_block_entity"), FabricBlockEntityTypeBuilder.create(MagicTableBlockEntity::new, magicTable).build(null));
 
-		magicTableType = Registry.register(Registry.BLOCK_ENTITY_TYPE, new Identifier(""), FabricBlockEntityTypeBuilder.create(MagicTableBlockEntity::new, magicTable).build(null));
+        magicTableScreenHandler = ScreenHandlerRegistry.registerSimple(new Identifier("eaw", "magic_table_block"), MagicTableScreenHandler::new);
 	}
 }

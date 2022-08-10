@@ -10,6 +10,8 @@ import net.minecraft.client.render.entity.model.EntityModelLayer;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.Identifier;
 
+import java.util.List;
+
 public class ApprenticeStaffEntityModel extends AbstractStaffEntityModel {
 
     private final ModelPart crystal;
@@ -50,6 +52,10 @@ public class ApprenticeStaffEntityModel extends AbstractStaffEntityModel {
     @Override
     public ModelPart getCrystal() {
         return crystal;
+    }
+    @Override
+    public List<ModelPart> getChildCrystals() {
+        return null;
     }
     @Override
     public void render(MatrixStack matrices, VertexConsumer vertexConsumer, int light, int overlay, float red, float green, float blue, float alpha) {

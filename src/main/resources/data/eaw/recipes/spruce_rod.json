@@ -2,7 +2,7 @@
   "type": "minecraft:crafting_shaped",
   "key": {
     "C": {
-      "item": "minecraft:spruce_planks"
+      "item": "minecraft:spruce_slab"
     },
     "S": {
       "item": "minecraft:stick"
@@ -10,8 +10,8 @@
   },
   "pattern": [
     "CCC",
-    "S",
-    "S"
+    " S ",
+    " S "
   ],
   "result": {
     "item": "eaw:spruce_rod",

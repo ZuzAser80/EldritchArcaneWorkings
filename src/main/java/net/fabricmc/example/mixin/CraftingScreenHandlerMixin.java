@@ -44,12 +44,18 @@ public class CraftingScreenHandlerMixin {
             if(itemStack.getItem() instanceof AbstractMagicRodItem) {
                 String crystalName = "";
                 String rodName = "";
-                for(int i = 0; i <= 9; i++) {
-                    if(craftingInventory.getStack(i).isIn(TagKey.of(Registry.ITEM_KEY, new Identifier("eaw", "crystals")))) {
-                        crystalName = craftingInventory.getStack(i).getTranslationKey().replaceFirst("item.eaw.", "");
-                        crystalName = crystalName.replaceFirst("_crystal", "");
-                    } else if(craftingInventory.getStack(i).isIn(TagKey.of(Registry.ITEM_KEY, new Identifier("eaw", "rods")))) {
-                        rodName = craftingInventory.getStack(i).getTranslationKey().replaceFirst("item.eaw.", "");
+                for(int i = 0; i < 9; i++) {
+                    if(craftingInventory.getStack(i).getItem() instanceof AbstractMagicRodItem) {
+                        crystalName = Objects.requireNonNull(craftingInventory.getStack(i).getOrCreateNbt().get("crystal")).asString();
+                        rodName = Objects.requireNonNull(craftingInventory.getStack(i).getOrCreateNbt().get("rod")).asString();
+                        break;
+                    } else {
+                        if (craftingInventory.getStack(i).isIn(TagKey.of(Registry.ITEM_KEY, new Identifier("eaw", "crystals")))) {
+                            crystalName = craftingInventory.getStack(i).getTranslationKey().replaceFirst("item.eaw.", "");
+                            crystalName = crystalName.replaceFirst("_crystal", "");
+                        } else if (craftingInventory.getStack(i).isIn(TagKey.of(Registry.ITEM_KEY, new Identifier("eaw", "rods")))) {
+                            rodName = craftingInventory.getStack(i).getTranslationKey().replaceFirst("item.eaw.", "");
+                        }
                     }
                 }
                 itemStack.getOrCreateNbt().putString("crystal", crystalName);

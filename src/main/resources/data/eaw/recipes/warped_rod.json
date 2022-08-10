@@ -2,7 +2,7 @@
   "type": "minecraft:crafting_shaped",
   "key": {
     "C": {
-      "item": "minecraft:warped_planks"
+      "item": "minecraft:warped_slab"
     },
     "S": {
       "item": "minecraft:stick"
@@ -10,8 +10,8 @@
   },
   "pattern": [
     "CCC",
-    "S",
-    "S"
+    " S ",
+    " S "
   ],
   "result": {
     "item": "eaw:warped_rod",

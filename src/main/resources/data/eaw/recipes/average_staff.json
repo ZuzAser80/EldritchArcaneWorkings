@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "C": {
+      "tag": "eaw:crystals"
+    },
+    "S": {
+      "tag": "eaw:rods"
+    },
+    "V": {
+      "item": "eaw:apprentice_staff"
+    }
+  },
+  "pattern": [
+    "C",
+    "V",
+    "S"
+  ],
+  "result": {
+    "item": "eaw:average_staff"
+  }
+}

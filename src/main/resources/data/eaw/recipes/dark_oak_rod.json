@@ -2,7 +2,7 @@
   "type": "minecraft:crafting_shaped",
   "key": {
     "C": {
-      "item": "minecraft:dark_oak_planks"
+      "item": "minecraft:dark_oak_slab"
     },
     "S": {
       "item": "minecraft:stick"
@@ -10,8 +10,8 @@
   },
   "pattern": [
     "CCC",
-    "S",
-    "S"
+    " S ",
+    " S "
   ],
   "result": {
     "item": "eaw:dark_oak_rod",

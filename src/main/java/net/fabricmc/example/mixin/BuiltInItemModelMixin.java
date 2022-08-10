@@ -1,9 +1,7 @@
 package net.fabricmc.example.mixin;
 
 import net.fabricmc.example.item.AbstractMagicRodItem;
-import net.fabricmc.example.item.model.AbstractStaffEntityModel;
-import net.fabricmc.example.item.model.ApprenticeStaffEntityModel;
-import net.fabricmc.example.item.model.NoviceStaffEntityModel;
+import net.fabricmc.example.item.model.*;
 import net.fabricmc.example.util.EAWAnimationHelper;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.VertexConsumer;
@@ -39,11 +37,15 @@ public class BuiltInItemModelMixin {
 
     protected NoviceStaffEntityModel noviceStaffModel;
     protected ApprenticeStaffEntityModel apprenticeStaffModel;
+    protected AverageStaffEntityModel averageStaffEntityModel;
+    protected MasterStaffEntityModel masterStaffEntityModel;
 
     @Inject(at = @At("HEAD"), method = "reload")
     public void reloadInject(ResourceManager manager, CallbackInfo ci) {
         noviceStaffModel = new NoviceStaffEntityModel(entityModelLoader.getModelPart(NoviceStaffEntityModel.layer));
         apprenticeStaffModel = new ApprenticeStaffEntityModel(entityModelLoader.getModelPart(ApprenticeStaffEntityModel.layer));
+        averageStaffEntityModel = new AverageStaffEntityModel(entityModelLoader.getModelPart(AverageStaffEntityModel.layer));
+        masterStaffEntityModel = new MasterStaffEntityModel(entityModelLoader.getModelPart(MasterStaffEntityModel.layer));
     }
 
     @Inject(at = @At("HEAD"), method = "render")
@@ -57,20 +59,12 @@ public class BuiltInItemModelMixin {
     }
     public void renderStaff(String translationKey, ItemStack stack, MatrixStack matrices, int light, int overlay, VertexConsumerProvider vertexConsumers) {
         AbstractStaffEntityModel model;
-        Identifier textureId;
         switch (translationKey) {
-            case "item.eaw.novice_staff" -> {
-                model = noviceStaffModel;
-                textureId = new Identifier("eaw", "textures/entity/novice_staff_entity.png");
-            }
-            case "item.eaw.apprentice_staff" -> {
-                model = apprenticeStaffModel;
-                textureId = new Identifier("eaw", "textures/entity/apprentice_staff_entity.png");
-            }
-            default -> {
-                model = null;
-                textureId = null;
-            }
+            case "item.eaw.novice_staff" -> model = noviceStaffModel;
+            case "item.eaw.apprentice_staff" -> model = apprenticeStaffModel;
+            case "item.eaw.average_staff" -> model = averageStaffEntityModel;
+            case "item.eaw.master_staff" -> model = masterStaffEntityModel;
+            default -> model = null;
         }
         if(model != null) {
             if (!helper.getIsPlaying()) {
@@ -85,16 +79,27 @@ public class BuiltInItemModelMixin {
                 if(model.rotateZ()) {
                     model.getCrystal().roll = helper.getOffset(Direction.Axis.Z);
                 }
+                if(model.getChildCrystals() != null) {
+                    for(int i = 0; i < model.getChildCrystals().size(); i++) {
+                        if(model.rotateZ()) {
+                            model.getChildCrystals().get(i).roll = -helper.getOffset(Direction.Axis.Z);
+                        }
+                        if(model.rotateY()) {
+                            model.getChildCrystals().get(i).yaw = -helper.getOffset(Direction.Axis.Y);
+                        }
+                        if(model.rotateX()) {
+                            model.getChildCrystals().get(i).pitch = -helper.getOffset(Direction.Axis.X);
+                        }
+                    }
+                }
             }
             if(stack.getOrCreateNbt() != null) {
-                if (apprenticeStaffModel.equals(model)) {
-                    String textureCrystal = "textures/entity/crystal/apprentice/" + stack.getOrCreateNbt().getString("crystal") + "_crystal_entity.png";
-                    VertexConsumer crystalVertexConsumer = ItemRenderer.getDirectItemGlintConsumer(vertexConsumers, this.noviceStaffModel.getLayer(new Identifier("eaw", textureCrystal)), true, false);
-                    model.getCrystal().render(matrices, crystalVertexConsumer, light, overlay, 1, 1, 1, 1);
-                    String textureRod = "textures/entity/rod/" + stack.getOrCreateNbt().getString("rod") + ".png";
-                    VertexConsumer vertexConsumer = ItemRenderer.getDirectItemGlintConsumer(vertexConsumers, this.noviceStaffModel.getLayer(new Identifier("eaw", textureRod)), true, false);
-                    model.render(matrices, vertexConsumer, light, overlay, 1.0f, 1.0f, 1.0f, 1.0f);
-                }
+                String textureCrystal = "textures/entity/crystal/apprentice/" + stack.getOrCreateNbt().getString("crystal") + "_crystal_entity.png";
+                VertexConsumer crystalVertexConsumer = ItemRenderer.getDirectItemGlintConsumer(vertexConsumers, this.noviceStaffModel.getLayer(new Identifier("eaw", textureCrystal)), true, false);
+                model.getCrystal().render(matrices, crystalVertexConsumer, light, overlay, 1, 1, 1, 1);
+                String textureRod = "textures/entity/rod/" + stack.getOrCreateNbt().getString("rod") + ".png";
+                VertexConsumer vertexConsumer = ItemRenderer.getDirectItemGlintConsumer(vertexConsumers, this.noviceStaffModel.getLayer(new Identifier("eaw", textureRod)), true, false);
+                model.render(matrices, vertexConsumer, light, overlay, 1.0f, 1.0f, 1.0f, 1.0f);
             }
         }
     }

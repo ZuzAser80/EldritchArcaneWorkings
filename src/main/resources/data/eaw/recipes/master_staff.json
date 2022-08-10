@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "C": {
+      "tag": "eaw:crystals"
+    },
+    "V": {
+      "item": "eaw:average_staff"
+    }
+  },
+  "pattern": [
+    "CVC"
+  ],
+  "result": {
+    "item": "eaw:master_staff"
+  }
+}
