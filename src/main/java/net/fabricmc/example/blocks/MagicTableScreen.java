@@ -11,7 +11,8 @@ import net.minecraft.util.Identifier;
 
 public class MagicTableScreen extends HandledScreen<MagicTableScreenHandler> {
 
-    private static final Identifier TEXTURE = new Identifier("minecraft", "textures/gui/container/generic_54.png");
+    private static final Identifier TEXTURE = new Identifier("eaw", "textures/gui/magic_table.png");
+
 
     public MagicTableScreen(MagicTableScreenHandler handler, PlayerInventory inventory, Text title) {
         super(handler, inventory, title);
@@ -22,14 +23,9 @@ public class MagicTableScreen extends HandledScreen<MagicTableScreenHandler> {
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
         RenderSystem.setShaderTexture(0, TEXTURE);
-        int x = (width - backgroundWidth) / 2;
-        int y = (height - backgroundHeight) / 2;
+        int x = (width - 226) / 2;
+        int y = (height - 255) / 2;
         drawTexture(matrices, x, y, 0, 0, backgroundWidth, backgroundHeight);
-    }
-
-    protected boolean isClickOutsideBounds(double mouseX, double mouseY, int left, int top, int button) {
-        System.out.println("left: " + left + " : " + top + " mouse: " + mouseX + " : " + mouseY);
-        return super.isClickOutsideBounds(mouseX, mouseY, left, top, button);
     }
 
     @Override
@@ -45,7 +41,7 @@ public class MagicTableScreen extends HandledScreen<MagicTableScreenHandler> {
         // Center the title
         titleX = (backgroundWidth - textRenderer.getWidth(title)) / 2;
         //Bro im dumb
-        backgroundWidth = 176;
-        backgroundHeight = 222;
+        backgroundWidth = 226;
+        backgroundHeight = 255;
     }
 }

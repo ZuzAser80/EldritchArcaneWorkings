@@ -13,7 +13,8 @@ import org.jetbrains.annotations.Nullable;
 
 public class MagicTableScreenHandler extends ScreenHandler {
 
-    private static final int field_30780 = 9;
+    int offsetLeft = 253;
+    int offsetTop = 96;
     private final Inventory inventory;
 
     public MagicTableScreenHandler(int syncId, PlayerInventory playerInventory) {
