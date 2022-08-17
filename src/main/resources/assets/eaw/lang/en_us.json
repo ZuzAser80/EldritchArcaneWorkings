@@ -1,3 +1,4 @@
 {
-  "item.eaw.warped_rod": "Warped Rod"
+  "item.eaw.warped_rod": "Warped Rod",
+  "item.eaw.spell_book_tooltip": "Spell: %s"
 }

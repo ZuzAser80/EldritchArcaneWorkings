@@ -2,6 +2,7 @@ package net.fabricmc.example.networking;
 
 import io.netty.buffer.Unpooled;
 import net.fabricmc.example.item.AbstractMagicRodItem;
+import net.fabricmc.example.spell.spells.*;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
@@ -44,7 +45,10 @@ public class EAWEvents {
         );
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
             if(switchSpell1.wasPressed()) {
-                client.getNetworkHandler().sendPacket(createSpellSwitch1S2CPacket());
+                assert client.player != null;
+                if (client.player.getMainHandStack().getItem() instanceof AbstractMagicRodItem) {
+                    client.getNetworkHandler().sendPacket(createSpellSwitch1S2CPacket());
+                }
             }
         });
     }
@@ -60,7 +64,10 @@ public class EAWEvents {
         );
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
             if(switchSpell2.wasPressed()) {
-                client.getNetworkHandler().sendPacket(createSpellSwitch2S2CPacket());
+                assert client.player != null;
+                if (client.player.getMainHandStack().getItem() instanceof AbstractMagicRodItem) {
+                    client.getNetworkHandler().sendPacket(createSpellSwitch2S2CPacket());
+                }
             }
         });
     }
@@ -69,7 +76,7 @@ public class EAWEvents {
         server.execute(() -> {
             PlayerInventory i = player.getInventory();
             if(i.getMainHandStack().getItem() instanceof AbstractMagicRodItem rodItem) {
-                rodItem.switchCurrentSpell();
+                rodItem.switchCurrentSpell(i.getMainHandStack());
             }
         });
     }
@@ -78,7 +85,7 @@ public class EAWEvents {
         server.execute(() -> {
             PlayerInventory i = player.getInventory();
             if(i.getMainHandStack().getItem() instanceof AbstractMagicRodItem rodItem) {
-                rodItem.switchCurrentSpellDownwards();
+                rodItem.switchCurrentSpellDownwards(i.getMainHandStack());
             }
         });
     }

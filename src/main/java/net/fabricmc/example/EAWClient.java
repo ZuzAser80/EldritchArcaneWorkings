@@ -3,9 +3,9 @@ package net.fabricmc.example;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.example.blocks.MagicTableScreen;
 import net.fabricmc.example.entity.fire.AdvancedFireballEntity;
+import net.fabricmc.example.entity.generic.LandmineEntity;
 import net.fabricmc.example.entity.misc.AbstractParticleLeavingEntity;
 import net.fabricmc.example.entity.water.AdvancedSnowballEntity;
-import net.fabricmc.example.entity.water.IceShieldEntity;
 import net.fabricmc.example.item.model.ApprenticeStaffEntityModel;
 import net.fabricmc.example.item.model.AverageStaffEntityModel;
 import net.fabricmc.example.item.model.MasterStaffEntityModel;
@@ -23,7 +23,7 @@ public class EAWClient implements ClientModInitializer {
         AdvancedFireballEntity.clientRegistry();
         AdvancedSnowballEntity.clientRegistry();
         AbstractParticleLeavingEntity.clientRegistry();
-        IceShieldEntity.clientRegistry();
+        LandmineEntity.clientRegistry();
 
         //Keybindings
         EAWEvents.registerSwitchSpell1Keybinding();

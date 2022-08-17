@@ -10,7 +10,7 @@ import net.minecraft.world.World;
 public class AdvancedSnowballSpell extends Spell {
 
     public AdvancedSnowballSpell() {
-        super(SpellType.WATER, SpellRank.APPRENTICE, 20, 10);
+        super(SpellType.WATER, SpellRank.APPRENTICE, 20, 10, "Advanced Snowball");
     }
 
     @Override

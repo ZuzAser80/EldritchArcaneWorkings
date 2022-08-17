@@ -23,9 +23,14 @@ public class MagicTableScreen extends HandledScreen<MagicTableScreenHandler> {
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
         RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
         RenderSystem.setShaderTexture(0, TEXTURE);
-        int x = (width - 226) / 2;
-        int y = (height - 255) / 2;
+        int x = (width - backgroundWidth) / 2;
+        int y = (height - backgroundHeight) / 2;
         drawTexture(matrices, x, y, 0, 0, backgroundWidth, backgroundHeight);
+    }
+
+    @Override
+    protected boolean isClickOutsideBounds(double mouseX, double mouseY, int left, int top, int button) {
+        return mouseX < (double)left - 1 || mouseY < (double)top - 33 || mouseX >= (double)(left + this.backgroundWidth) || mouseY >= (double)(top + this.backgroundHeight);
     }
 
     @Override
@@ -40,8 +45,10 @@ public class MagicTableScreen extends HandledScreen<MagicTableScreenHandler> {
         super.init();
         // Center the title
         titleX = (backgroundWidth - textRenderer.getWidth(title)) / 2;
+        titleY = -15;
         //Bro im dumb
-        backgroundWidth = 226;
-        backgroundHeight = 255;
+        backgroundWidth = 176;
+        backgroundHeight = 222;
+        playerInventoryTitleY = 100;
     }
 }

@@ -15,7 +15,7 @@ import net.minecraft.util.math.Vec3f;
 public class AdvancedSnowballEntityRenderer extends EntityRenderer<AdvancedSnowballEntity> {
 
     Identifier texture;
-    AdvancedFireballEntityModel model = new AdvancedFireballEntityModel(AdvancedFireballEntityModel.getTexturedModelData().createModel());
+    AdvancedSnowballEntityModel model = new AdvancedSnowballEntityModel(AdvancedSnowballEntityModel.getTexturedModelData().createModel());
 
     public AdvancedSnowballEntityRenderer(EntityRendererFactory.Context context) {
         super(context);

@@ -15,7 +15,7 @@ import net.minecraft.world.World;
 
 public class LeapSpell extends Spell {
     public LeapSpell() {
-        super(SpellType.AIR, SpellRank.AVERAGE, 20, 1);
+        super(SpellType.AIR, SpellRank.AVERAGE, 20, 1, "Leap");
     }
     @Override
     public void cast(PlayerEntity user, World world) {

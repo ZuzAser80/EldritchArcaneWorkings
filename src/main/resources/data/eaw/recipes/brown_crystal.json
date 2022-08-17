@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "minecraft:brown_dye"
+    },
+    {
+      "tag": "eaw:crystals"
+    }
+  ],
+  "result": {
+    "item": "eaw:brown_crystal"
+  }
+}

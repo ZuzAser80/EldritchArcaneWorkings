@@ -15,7 +15,7 @@ public class EAWAnimationHelper {
     private final static Set<EAWAnimationHelper> animations = new HashSet<>();
 
     private boolean isPlaying;
-    private int animationLength;
+    private final int animationLength;
     private int ticks;
     private float offsetPerTickX;
     private float offsetPerTickY;

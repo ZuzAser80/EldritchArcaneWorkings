@@ -10,8 +10,9 @@ import net.minecraft.world.World;
 
 public class FlameSpell extends Spell {
     public FlameSpell() {
-        super(SpellType.FIRE, SpellRank.NOVICE, 0, 1);
+        super(SpellType.FIRE, SpellRank.NOVICE, 0, 1, "Flame");
     }
+    @Override
     public void cast(PlayerEntity user, World world) {
         AbstractParticleLeavingEntity fireballEntity = new AbstractParticleLeavingEntity(world, ParticleTypes.FLAME, true);
         fireballEntity.setPosition(user.getX(), user.getY() + 0.5, user.getZ());

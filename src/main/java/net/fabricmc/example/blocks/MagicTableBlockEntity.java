@@ -14,6 +14,7 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.screen.NamedScreenHandlerFactory;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.text.Text;
+import net.minecraft.util.Formatting;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
 import org.jetbrains.annotations.Nullable;
@@ -53,12 +54,12 @@ public class MagicTableBlockEntity extends LockableContainerBlockEntity implemen
 
     @Override
     public Text getDisplayName() {
-        return Text.of("sex");
+        return Text.translatable("Magic Table").formatted(Formatting.LIGHT_PURPLE, Formatting.BOLD);
     }
 
     @Override
     protected Text getContainerName() {
-        return Text.of("sex");
+        return Text.translatable("Magic Table").formatted(Formatting.LIGHT_PURPLE, Formatting.BOLD);
     }
 
     @Override

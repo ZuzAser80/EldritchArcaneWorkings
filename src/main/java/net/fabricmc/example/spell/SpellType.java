@@ -4,5 +4,6 @@ public enum SpellType {
     FIRE,
     AIR,
     WATER,
-    GROUND
+    GROUND,
+    F0RB1DD3N
 }

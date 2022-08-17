@@ -75,7 +75,7 @@ public class AdvancedSnowballEntity extends PersistentProjectileEntity {
     protected void setSnow(World world, BlockPos pos) {
         for (BlockPos blockPos2 : BlockPos.iterate(pos.north(4).east(4).up(4), pos.south(4).west(4).down(4))) {
             Random rnd = new Random();
-            int random = rnd.nextInt(0, 2);
+            int random = rnd.nextInt(0, 4);
             if(blockPos2.isWithinDistance(pos, 4)) {
                 if(world.getBlockState(blockPos2).isOf(Blocks.WATER)) {
                     world.setBlockState(blockPos2, Blocks.ICE.getDefaultState());

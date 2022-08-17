@@ -2,30 +2,28 @@ package net.fabricmc.example.item;
 
 import net.fabricmc.example.spell.Spell;
 import net.fabricmc.example.spell.SpellRank;
-import net.fabricmc.example.spell.SpellType;
-import net.fabricmc.example.spell.spells.*;
+import net.fabricmc.example.spell.spells.EmptySpell;
+import net.minecraft.client.particle.WaterSplashParticle;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.tag.TagKey;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.Hand;
-import net.minecraft.util.Identifier;
 import net.minecraft.util.TypedActionResult;
-import net.minecraft.util.registry.Registry;
 import net.minecraft.world.World;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
 
 public class AbstractMagicRodItem extends Item {
 
     int maxManaCap, manaCount, maxSpellCount;
     SpellRank rank;
-    List<Spell> spellList = new LinkedList<>();
-    public Spell currentSpell;
+    private int maxSpells;
 
-    public AbstractMagicRodItem(Settings settings, int maxManaCapacity, SpellRank rodRank, int maxSpellCount) {
+    public AbstractMagicRodItem(Settings settings, int maxManaCapacity, SpellRank rodRank, int maxSpellCount, int maxSpellSlot) {
         super(settings);
         this.maxManaCap = maxManaCapacity;
         if(manaCount < maxManaCapacity) {
@@ -33,53 +31,79 @@ public class AbstractMagicRodItem extends Item {
         }
         rank = rodRank;
         this.maxSpellCount = maxSpellCount;
+        this.maxSpells = maxSpellSlot;
     }
 
-    public int getCurrentSpellIndex() {
-        return spellList.indexOf(currentSpell);
+    public List<Spell> getSpellList(ItemStack stack) {
+        List<Spell> spellList = new LinkedList<>();
+        int maxSpellSlots = stack.getOrCreateNbt().getInt("maxSpellSlot");
+        NbtCompound spellsSubNbt = stack.getOrCreateSubNbt("spells");
+        for(int i = 0; i < maxSpellSlots - 1; i++) {
+            spellList.add(Spell.fromNbt((NbtCompound)spellsSubNbt.get("spell_" + i)));
+        }
+        return spellList;
     }
 
-    public void switchCurrentSpell() {
-        if(this.getCurrentSpellIndex() < (spellList.size() - 1)) {
-            currentSpell = spellList.get(this.getCurrentSpellIndex() + 1);
-        } else {
-            currentSpell = spellList.get(0);
+    public void setSpellList(List<Spell> list, ItemStack stack) {
+        int maxSpellSlots = stack.getOrCreateNbt().getInt("maxSpellSlot");
+        for(int i = 0; i < (maxSpellSlots - 1); i++) {
+            stack.getOrCreateSubNbt("spells").put("spell_" + i, list.get(i).toNbt());
         }
     }
 
-    public void switchCurrentSpellDownwards() {
-        if(getCurrentSpellIndex() > 0) {
-            currentSpell = spellList.get(this.getCurrentSpellIndex() - 1);
+    public int getCurrentSpellIndex(ItemStack stack) {
+        return this.getSpellList(stack).indexOf(stack.getOrCreateSubNbt("spells").get("currentSpell"));
+    }
+
+    public void switchCurrentSpell(ItemStack stack) {
+        int maxSpellSlots = stack.getOrCreateNbt().getInt("maxSpellSlot");
+        List<Spell> spellList = this.getSpellList(stack);
+        if(getCurrentSpellIndex(stack) < (maxSpellSlots - 1)) {
+            stack.getOrCreateSubNbt("spells").put("currentSpell", spellList.get(getCurrentSpellIndex(stack) + 1).toNbt());
         } else {
-            currentSpell = spellList.get(spellList.size() - 1);
+            stack.getOrCreateSubNbt("spells").put("currentSpell", spellList.get(0).toNbt());
+        }
+    }
+
+    public void switchCurrentSpellDownwards(ItemStack stack) {
+        int maxSpellSlots = stack.getOrCreateNbt().getInt("maxSpellSlot");
+        List<Spell> spellList = this.getSpellList(stack);
+        if(getCurrentSpellIndex(stack) > 0) {
+            stack.getOrCreateSubNbt("spells").put("currentSpell", spellList.get(getCurrentSpellIndex(stack) - 1).toNbt());
+        } else {
+            stack.getOrCreateSubNbt("spells").put("currentSpell", spellList.get(maxSpellSlots - 1).toNbt());
         }
     }
 
     @Override
     public void inventoryTick(ItemStack stack, World world, Entity entity, int slot, boolean selected) {
-        if(stack.isOf(this) && stack.getNbt() == null) {
+        if(stack.isOf(this) && stack.getNbt() == null || stack.getNbt().getString("rod") == null && stack.getNbt().getString("crystal") == null) {
             stack.getOrCreateNbt().putFloat("manaCount", manaCount);
             stack.getOrCreateNbt().putString("rod", "oak_rod");
             stack.getOrCreateNbt().putString("crystal", "crystal");
+            stack.getOrCreateNbt().putInt("maxSpellSlot", ((AbstractMagicRodItem)stack.getItem()).maxSpells);
         }
     }
 
     @Override
     public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
-        if(user.getMainHandStack().getOrCreateNbt().getFloat("maxManaCap") == 0) {
-            user.getMainHandStack().getOrCreateNbt().putFloat("maxManaCap", maxManaCap);
+        ItemStack mainHand = user.getMainHandStack();
+        NbtCompound nbt = mainHand.getOrCreateNbt();
+        float temp;
+        if(nbt.getFloat("maxManaCap") == 0) {
+            nbt.putFloat("maxManaCap", maxManaCap);
         }
-        if(user.getMainHandStack().isOf(this) && !world.isClient && currentSpell != null) {
-            if(manaCount > currentSpell.getManaCost()) {
-                currentSpell.cast(user, world);
-                manaCount -= currentSpell.getManaCost();
-                user.getMainHandStack().getOrCreateNbt().putFloat("manaCount", manaCount);
-            } else {
-                user.getMainHandStack().getOrCreateNbt().putFloat("manaCount", maxManaCap);
-                manaCount = maxManaCap;
+        if(mainHand.isOf(this) && !world.isClient) {
+            Spell currentSpell = new EmptySpell();
+            NbtCompound spells = user.getMainHandStack().getOrCreateSubNbt("spells");
+            if((NbtCompound) spells.get("currentSpell") != null) {
+                currentSpell = Spell.fromNbt((NbtCompound) spells.get("currentSpell"));
             }
-        } else if(currentSpell == null && spellList.size() > 0) {
-            currentSpell = spellList.get(0);
+            if(nbt.getFloat("manaCount") > currentSpell.getManaCost()) {
+                temp = nbt.getFloat("manaCount");
+                currentSpell.cast(user, world);
+                nbt.putFloat("manaCount", temp -= currentSpell.getManaCost());
+            }
         }
         return TypedActionResult.success(user.getMainHandStack(), true);
     }

@@ -10,7 +10,7 @@ import net.minecraft.world.World;
 public class AdvancedFireballSpell extends Spell {
 
     public AdvancedFireballSpell() {
-        super(SpellType.FIRE, SpellRank.NOVICE, 20, 5);
+        super(SpellType.FIRE, SpellRank.NOVICE, 20, 5, "Advanced Fireball");
     }
 
     @Override
