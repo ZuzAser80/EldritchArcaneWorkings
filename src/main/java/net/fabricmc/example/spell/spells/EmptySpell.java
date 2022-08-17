@@ -15,6 +15,6 @@ public class EmptySpell extends Spell {
 
     @Override
     public void cast(PlayerEntity user, World world) {
-        user.sendMessage(Text.translatable("SEX"));
+        user.sendMessage(Text.translatable("E"));
     }
 }
