@@ -4,12 +4,14 @@ import net.fabricmc.example.ExampleMod;
 import net.fabricmc.example.item.AbstractMagicRodItem;
 import net.fabricmc.example.item.AbstractSpellBookItem;
 import net.fabricmc.example.spell.Spell;
+import net.fabricmc.example.spell.spells.EmptySpell;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.inventory.SimpleInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.nbt.NbtElement;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.slot.Slot;
 
@@ -19,7 +21,7 @@ public class MagicTableScreenHandler extends ScreenHandler {
 
     final int offsetLeft = 33;
     final int offsetTop = -27;
-    private final Inventory i;
+    private final Inventory inv;
 
     public MagicTableScreenHandler(int syncId, PlayerInventory playerInventory) {
         this(syncId, playerInventory, new SimpleInventory(9));
@@ -30,7 +32,7 @@ public class MagicTableScreenHandler extends ScreenHandler {
     public MagicTableScreenHandler(int syncId, PlayerInventory playerInventory, Inventory inventory) {
         super(ExampleMod.magicTableScreenHandler, syncId);
         checkSize(inventory, 9);
-        this.i = inventory;
+        this.inv = inventory;
         //some inventories do custom logic when a player opens it.
         inventory.onOpen(playerInventory.player);
 
@@ -46,7 +48,12 @@ public class MagicTableScreenHandler extends ScreenHandler {
         this.addSlot(new MagicTableStaffSlot(inventory, 5, 128 + offsetLeft - 32, 83 + offsetTop, false));
         this.addSlot(new MagicTableStaffSlot(inventory, 6, 57 + offsetLeft - 32, 107 + offsetTop, false));
         this.addSlot(new MagicTableStaffSlot(inventory, 7, 101 + offsetLeft - 32, 107 + offsetTop, false));
-        this.addSlot(new MagicTableStaffSlot(inventory, 8, 79 + offsetLeft - 32, 61 + offsetTop, true));
+        this.addSlot(new MagicTableStaffSlot(inventory, 8, 79 + offsetLeft - 32, 61 + offsetTop, true){
+            @Override
+            public void onTakeItem(PlayerEntity player, ItemStack stack) {
+                MagicTableScreenHandler.this.manage(player, stack);
+            }
+        });
 
         //The player inventory
         for (m = 0; m < 3; ++m) {
@@ -63,12 +70,31 @@ public class MagicTableScreenHandler extends ScreenHandler {
     @Override
     public void close(PlayerEntity player) {
         super.close(player);
-        dropInventory(player, i);
+        dropInventory(player, inv);
+    }
+
+    public void manage(PlayerEntity user, ItemStack stack) {
+        for(int i = 0; i < inv.size(); i++) {
+            if(inv.getStack(i).getItem() instanceof AbstractSpellBookItem && stack.getItem() instanceof AbstractMagicRodItem rodItem) {
+                if(inv.getStack(i).getNbt() != null) {
+                    NbtElement intoRod = inv.getStack(i).getOrCreateNbt().get("spell");
+                    if (!((NbtCompound) intoRod).getString("spellName").equals("None")) {
+                        stack.getOrCreateSubNbt("spells").put("spell_" + i, intoRod);
+                        inv.getStack(i).getOrCreateNbt().put("spell", new EmptySpell().toNbt());
+                        System.out.println("intoRod: " + intoRod + " Boo: " + rodItem.getSpellList(stack));
+                    } else {
+                        inv.getStack(i).getOrCreateNbt().put("spell", stack.getOrCreateSubNbt("spells").get("spell_" + i));
+                        stack.getOrCreateSubNbt("spells").put("spell_" + i, new EmptySpell().toNbt());
+                    }
+                }
+            }
+        }
+        stack.getOrCreateNbt().put("currentSpell", stack.getOrCreateSubNbt("spells").get("spell_0"));
     }
 
     @Override
     public boolean canUse(PlayerEntity player) {
-        return this.i.canPlayerUse(player);
+        return this.inv.canPlayerUse(player);
     }
 
     // Shift + Player Inv Slot
@@ -79,11 +105,11 @@ public class MagicTableScreenHandler extends ScreenHandler {
         if (slot.hasStack()) {
             ItemStack originalStack = slot.getStack();
             newStack = originalStack.copy();
-            if (invSlot < this.i.size()) {
-                if (!this.insertItem(originalStack, this.i.size(), this.slots.size(), true)) {
+            if (invSlot < this.inv.size()) {
+                if (!this.insertItem(originalStack, this.inv.size(), this.slots.size(), true)) {
                     return ItemStack.EMPTY;
                 }
-            } else if (!this.insertItem(originalStack, 0, this.i.size(), false)) {
+            } else if (!this.insertItem(originalStack, 0, this.inv.size(), false)) {
                 return ItemStack.EMPTY;
             }
 
@@ -104,29 +130,6 @@ class MagicTableStaffSlot extends Slot {
     public MagicTableStaffSlot(Inventory inventory, int index, int x, int y, boolean rod) {
         super(inventory, index, x, y);
         this.rod = rod;
-    }
-
-    @Override
-    public void onTakeItem(PlayerEntity player, ItemStack stack) {
-        if(stack.getItem() instanceof AbstractMagicRodItem rodItem && !player.world.isClient) {
-            List<Spell> list = rodItem.getSpellList(stack);
-            for (int i = 0; i < 8; i++) {
-                if(inventory.getStack(i).getItem() instanceof AbstractSpellBookItem) {
-                    list.add(Spell.fromNbt((NbtCompound)inventory.getStack(8).getOrCreateSubNbt("spells").get("currentSpell")));
-                    if (list.get(i) != null) {
-                        inventory.removeStack(i);
-                    }
-                } else if(list.get(i) != null) {
-                    inventory.getStack(i).getOrCreateNbt().putString("spellType", list.get(i).getType().toString());
-                    inventory.getStack(i).getOrCreateNbt().putString("spellName", list.get(i).getName());
-                    inventory.getStack(8).getOrCreateSubNbt("spells").putString("spell_" + i, "None");
-                }
-            }
-            if(!list.isEmpty()) {
-                rodItem.setSpellList(list, stack);
-            }
-        }
-        super.onTakeItem(player, stack);
     }
 
     @Override

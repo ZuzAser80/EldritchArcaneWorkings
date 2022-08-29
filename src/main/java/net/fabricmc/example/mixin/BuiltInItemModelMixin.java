@@ -39,6 +39,7 @@ public class BuiltInItemModelMixin {
     protected ApprenticeStaffEntityModel apprenticeStaffModel;
     protected AverageStaffEntityModel averageStaffEntityModel;
     protected MasterStaffEntityModel masterStaffEntityModel;
+    protected GodStaffEntityModel godStaffEntityModel;
 
     @Inject(at = @At("HEAD"), method = "reload")
     public void reloadInject(ResourceManager manager, CallbackInfo ci) {
@@ -46,6 +47,7 @@ public class BuiltInItemModelMixin {
         apprenticeStaffModel = new ApprenticeStaffEntityModel(entityModelLoader.getModelPart(ApprenticeStaffEntityModel.layer));
         averageStaffEntityModel = new AverageStaffEntityModel(entityModelLoader.getModelPart(AverageStaffEntityModel.layer));
         masterStaffEntityModel = new MasterStaffEntityModel(entityModelLoader.getModelPart(MasterStaffEntityModel.layer));
+        godStaffEntityModel = new GodStaffEntityModel(entityModelLoader.getModelPart(GodStaffEntityModel.layer));
     }
 
     @Inject(at = @At("HEAD"), method = "render")
@@ -64,6 +66,7 @@ public class BuiltInItemModelMixin {
             case "item.eaw.apprentice_staff" -> model = apprenticeStaffModel;
             case "item.eaw.average_staff" -> model = averageStaffEntityModel;
             case "item.eaw.master_staff" -> model = masterStaffEntityModel;
+            case "item.eaw.god_staff" -> model = godStaffEntityModel;
             default -> model = null;
         }
         if(model != null) {

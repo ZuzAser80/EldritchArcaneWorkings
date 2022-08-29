@@ -17,6 +17,9 @@ public abstract class Spell {
     SpellRank rank;
     int cooldown, manaCost;
 
+    //NEVER INPUT 2 SPELLS WITH SAME NAME!
+    //IT IS VERY IMPORTANT
+    //IK IT IS SPAGHETTI
     public Spell(SpellType type, SpellRank rank, int cooldown, int manaCost, String name) {
         spellHashMap.put(name, this);
         this.type = type;
@@ -24,6 +27,10 @@ public abstract class Spell {
         this.cooldown = cooldown;
         this.manaCost = manaCost;
         this.name = name;
+    }
+
+    public SpellRank getRank() {
+        return rank;
     }
 
     public String getName() {

@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "group": "black_dye",
+  "ingredients": [
+    {
+      "item": "eaw:magic_flower"
+    }
+  ],
+  "result": {
+    "item": "eaw:magic_crystal"
+  }
+}

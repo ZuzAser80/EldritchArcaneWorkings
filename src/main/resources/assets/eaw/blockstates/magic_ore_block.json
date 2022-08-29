@@ -1,0 +1,5 @@
+{
+  "variants": {
+    "": { "model": "eaw:block/magic_ore_block" }
+  }
+}

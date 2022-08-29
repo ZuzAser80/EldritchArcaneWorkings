@@ -23,6 +23,7 @@ public class LandmineEntityModel extends EntityModel<Entity> {
     }
     @Override
     public void render(MatrixStack matrices, VertexConsumer vertexConsumer, int light, int overlay, float red, float green, float blue, float alpha) {
+        matrices.translate(0, -1.25, 0);
         bb_main.render(matrices, vertexConsumer, light, overlay, red, green, blue, alpha);
     }
 }

@@ -1,4 +1,7 @@
 {
   "item.eaw.warped_rod": "Warped Rod",
-  "item.eaw.spell_book_tooltip": "Spell: %s"
+  "item.eaw.spell_book_tooltip": "Spell: %s",
+  "item.eaw.rod_item.tooltip_0": "Spell: %s",
+  "item.eaw.magic_crystal": "Raw Magic Crystal",
+  "item.eaw.rod_item.rank_tooltip": "Rank: %s"
 }

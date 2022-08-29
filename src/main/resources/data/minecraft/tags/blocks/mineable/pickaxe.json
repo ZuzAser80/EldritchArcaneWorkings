@@ -1,0 +1,8 @@
+{
+  "replace": false,
+  "values": [
+    "eaw:magic_table_block",
+    "eaw:magic_ore_block",
+    "eaw:deepslate_magic_ore_block"
+  ]
+}

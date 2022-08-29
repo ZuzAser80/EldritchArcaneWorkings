@@ -13,7 +13,7 @@ import java.util.Random;
 public class IceShieldSpell extends Spell {
 
     public IceShieldSpell() {
-        super(SpellType.WATER, SpellRank.AVERAGE, 20, 10, "Ice Shield");
+        super(SpellType.WATER, SpellRank.average, 20, 10, "Ice Shield");
     }
 
     @Override

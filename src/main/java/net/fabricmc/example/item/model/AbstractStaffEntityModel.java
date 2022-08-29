@@ -10,7 +10,7 @@ import net.minecraft.util.Identifier;
 import java.util.List;
 import java.util.function.Function;
 
-public class AbstractStaffEntityModel extends Model {
+public abstract class AbstractStaffEntityModel extends Model {
 
     ModelPart root;
 
@@ -19,25 +19,12 @@ public class AbstractStaffEntityModel extends Model {
         this.root = root;
     }
 
-    public ModelPart getCrystal() {
-        return null;
-    }
-    public List<ModelPart> getChildCrystals() {
-        return null;
-    }
+    public abstract ModelPart getCrystal();
+    public abstract List<ModelPart> getChildCrystals();
 
-    public boolean rotateX() {
-        return true;
-    }
-    public boolean rotateY() {
-        return true;
-    }
-    public boolean rotateZ() {
-        return true;
-    }
-
+    public abstract boolean rotateX();
+    public abstract boolean rotateY();
+    public abstract boolean rotateZ();
     @Override
-    public void render(MatrixStack matrices, VertexConsumer vertices, int light, int overlay, float red, float green, float blue, float alpha) {
-        root.render(matrices, vertices, light, overlay, red, green, blue, alpha);
-    }
+    public abstract void render(MatrixStack matrices, VertexConsumer vertices, int light, int overlay, float red, float green, float blue, float alpha);
 }

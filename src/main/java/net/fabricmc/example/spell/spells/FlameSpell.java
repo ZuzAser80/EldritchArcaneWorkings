@@ -10,7 +10,7 @@ import net.minecraft.world.World;
 
 public class FlameSpell extends Spell {
     public FlameSpell() {
-        super(SpellType.FIRE, SpellRank.NOVICE, 0, 1, "Flame");
+        super(SpellType.FIRE, SpellRank.novice, 0, 1, "Flame");
     }
     @Override
     public void cast(PlayerEntity user, World world) {

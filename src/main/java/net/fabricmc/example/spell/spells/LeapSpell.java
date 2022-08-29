@@ -4,18 +4,14 @@ import net.fabricmc.example.spell.Spell;
 import net.fabricmc.example.spell.SpellRank;
 import net.fabricmc.example.spell.SpellType;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.projectile.ArrowEntity;
 import net.minecraft.particle.ParticleTypes;
-import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 
 public class LeapSpell extends Spell {
     public LeapSpell() {
-        super(SpellType.AIR, SpellRank.AVERAGE, 20, 1, "Leap");
+        super(SpellType.AIR, SpellRank.average, 20, 1, "Leap");
     }
     @Override
     public void cast(PlayerEntity user, World world) {

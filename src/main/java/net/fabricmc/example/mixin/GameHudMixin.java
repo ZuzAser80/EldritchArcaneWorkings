@@ -53,12 +53,10 @@ public abstract class GameHudMixin extends DrawableHelper {
             if(mc.player.getMainHandStack().getNbt() != null) {
                 ItemStack mainHand = mc.player.getMainHandStack();
                 Spell fromNbtSpell = Spell.fromNbt((NbtCompound)mainHand.getOrCreateSubNbt("spells").get("currentSpell"));
-                if(fromNbtSpell != null && !fromNbtSpell.getName().equals("None")) {
+                if(fromNbtSpell != null) {
                     getTextRenderer().draw(matrices, fromNbtSpell.getName(), 10, scaledHeight - 10, new Color(0, 255, 157).getRGB());
-                } else if(fromNbtSpell.getName().equals("None")) {
-                    getTextRenderer().draw(matrices, "None", 10, scaledHeight - 10, new Color(255, 0, 0).getRGB());
                 } else {
-                    getTextRenderer().draw(matrices, "Null / Void", 10, scaledHeight - 10, new Color(187, 0, 255).getRGB());
+                    getTextRenderer().draw(matrices, "None", 10, scaledHeight - 10, new Color(0, 255, 157).getRGB());
                 }
             }
         }
