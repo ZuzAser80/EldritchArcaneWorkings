@@ -1,4 +1,4 @@
-# Fabric Example Mod
+# Eldritch Arcane Workings
 
 ## Setup
 

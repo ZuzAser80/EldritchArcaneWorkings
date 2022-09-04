@@ -18,6 +18,8 @@ import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.Packet;
+import net.minecraft.text.Text;
+import net.minecraft.util.Formatting;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.registry.Registry;
@@ -31,6 +33,7 @@ public class LandmineEntity extends PersistentProjectileEntity {
 
     public static EntityType<LandmineEntity> type;
     private final Map<Entity, Integer> affectedEntities;
+    private int entityAge = 0;
 
     Spell spell;
 
@@ -75,10 +78,16 @@ public class LandmineEntity extends PersistentProjectileEntity {
 
     public void tick() {
         super.tick();
+        if(entityAge < 450) {
+            entityAge++;
+        } else {
+            discard();
+        }
         if (!this.world.isClient) {
             List<Entity> list2 = this.world.getNonSpectatingEntities(Entity.class, this.getBoundingBox());
             if (!list2.isEmpty()) {
                 Iterator<Entity> var27 = list2.iterator();
+                //this.discard();
                 while (true) {
                     Entity livingEntity;
                     do {
@@ -95,7 +104,7 @@ public class LandmineEntity extends PersistentProjectileEntity {
     public void apply(Entity entity) {
         assert spell != null;
         switch (spell.getType()) {
-            case FIRE -> entity.setOnFireFor(20);
+            case FIRE -> { entity.setOnFireFor(20); }
             case WATER -> {
                 entity.addVelocity(0, 1.5, 0);
                 entity.velocityModified = true;

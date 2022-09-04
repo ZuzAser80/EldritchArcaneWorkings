@@ -1,16 +1,13 @@
 package net.fabricmc.example.entity.water;
 
-import net.fabricmc.example.util.EAWAnimationHelper;
 import net.minecraft.client.model.*;
 import net.minecraft.client.render.VertexConsumer;
 import net.minecraft.client.render.entity.model.EntityModel;
 import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.util.math.Direction;
 
 public class AdvancedSnowballEntityModel extends EntityModel<AdvancedSnowballEntity> {
 
     private final ModelPart bb_main;
-    private EAWAnimationHelper helper = EAWAnimationHelper.begin(0, 0, 0, 0);
 
     public AdvancedSnowballEntityModel(ModelPart root) {
         this.bb_main = root.getChild("bb_main");
@@ -25,10 +22,6 @@ public class AdvancedSnowballEntityModel extends EntityModel<AdvancedSnowballEnt
 
     @Override
     public void render(MatrixStack matrices, VertexConsumer vertexConsumer, int light, int overlay, float red, float green, float blue, float alpha) {
-        if(!helper.getIsPlaying()) {
-            helper = EAWAnimationHelper.begin(40, 0, 0, 4.5);
-        }
-        matrices.multiply(helper.getQuaternion(Direction.Axis.Z));
         bb_main.render(matrices, vertexConsumer, light, overlay, red, green, blue, alpha);
     }
 

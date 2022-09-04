@@ -45,7 +45,7 @@ public class MagicTableScreen extends HandledScreen<MagicTableScreenHandler> {
         super.init();
         // Center the title
         titleX = (backgroundWidth - textRenderer.getWidth(title)) / 2;
-        titleY = -15;
+        titleY = -23;
         //Bro im dumb
         backgroundWidth = 176;
         backgroundHeight = 222;

@@ -75,17 +75,23 @@ public class MagicTableScreenHandler extends ScreenHandler {
 
     public void manage(PlayerEntity user, ItemStack stack) {
         for(int i = 0; i < inv.size(); i++) {
-            if(inv.getStack(i).getItem() instanceof AbstractSpellBookItem && stack.getItem() instanceof AbstractMagicRodItem rodItem) {
-                if(inv.getStack(i).getNbt() != null) {
-                    NbtElement intoRod = inv.getStack(i).getOrCreateNbt().get("spell");
-                    if (!((NbtCompound) intoRod).getString("spellName").equals("None")) {
-                        stack.getOrCreateSubNbt("spells").put("spell_" + i, intoRod);
-                        inv.getStack(i).getOrCreateNbt().put("spell", new EmptySpell().toNbt());
-                        System.out.println("intoRod: " + intoRod + " Boo: " + rodItem.getSpellList(stack));
-                    } else {
-                        inv.getStack(i).getOrCreateNbt().put("spell", stack.getOrCreateSubNbt("spells").get("spell_" + i));
-                        stack.getOrCreateSubNbt("spells").put("spell_" + i, new EmptySpell().toNbt());
+            if(stack.getItem() instanceof AbstractMagicRodItem rodItem) {
+                if (inv.getStack(i).getItem() instanceof AbstractSpellBookItem) {
+                    if (inv.getStack(i).getNbt() != null) {
+                        NbtElement intoRod = inv.getStack(i).getOrCreateNbt().get("spell");
+                        if (!((NbtCompound) intoRod).getString("spellName").equals("None")) {
+                            stack.getOrCreateSubNbt("spells").put("spell_" + i, intoRod);
+                            inv.getStack(i).getOrCreateNbt().put("spell", new EmptySpell().toNbt());
+                            System.out.println("intoRod: " + intoRod + " Boo: " + rodItem.getSpellList(stack));
+                        } else {
+                            inv.getStack(i).getOrCreateNbt().put("spell", stack.getOrCreateSubNbt("spells").get("spell_" + i));
+                            stack.getOrCreateSubNbt("spells").put("spell_" + i, new EmptySpell().toNbt());
+                        }
                     }
+                } else if (inv.getStack(i).isOf(ExampleMod.magicCrystal)) {
+                    float crystalCount = ((stack.getOrCreateNbt().getFloat("maxManaCap") - stack.getOrCreateNbt().getFloat("manaCount")) / 10);
+                    stack.getOrCreateNbt().putFloat("manaCount", stack.getOrCreateNbt().getFloat("manaCount") + (10 * crystalCount));
+                    inv.getStack(i).decrement((int)crystalCount);
                 }
             }
         }
@@ -137,7 +143,7 @@ class MagicTableStaffSlot extends Slot {
         if(rod) {
             return stack.getItem() instanceof AbstractMagicRodItem;
         } else {
-            return stack.getItem() instanceof AbstractSpellBookItem;
+            return stack.getItem() instanceof AbstractSpellBookItem || stack.isOf(ExampleMod.magicCrystal);
         }
     }
 }

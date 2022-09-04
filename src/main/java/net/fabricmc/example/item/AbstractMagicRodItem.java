@@ -84,7 +84,7 @@ public class AbstractMagicRodItem extends Item {
 
     @Override
     public void inventoryTick(ItemStack stack, World world, Entity entity, int slot, boolean selected) {
-        if(stack.isOf(this) && stack.getNbt() == null ||stack.getNbt().getString("rod") == null && stack.getNbt().getString("crystal") == null) {
+        if(stack.isOf(this) && (stack.getNbt() == null ||stack.getNbt().getString("rod") == null && stack.getNbt().getString("crystal") == null || stack.getNbt().getString("rod").equals("") || stack.getNbt().getString("crystal").equals(""))) {
             stack.getOrCreateNbt().putFloat("manaCount", manaCount);
             stack.getOrCreateNbt().putString("rod", "oak_rod");
             stack.getOrCreateNbt().putString("crystal", "crystal");

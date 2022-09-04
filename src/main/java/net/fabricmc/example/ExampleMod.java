@@ -14,16 +14,17 @@ import net.fabricmc.example.networking.EAWEvents;
 import net.fabricmc.example.spell.SpellRank;
 import net.fabricmc.example.spell.spells.*;
 import net.fabricmc.example.worldgen.EAWOres;
+import net.fabricmc.fabric.api.client.itemgroup.FabricItemGroupBuilder;
 import net.fabricmc.fabric.api.loot.v2.LootTableEvents;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.fabricmc.fabric.api.object.builder.v1.block.entity.FabricBlockEntityTypeBuilder;
 import net.fabricmc.fabric.api.screenhandler.v1.ScreenHandlerRegistry;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
+import net.minecraft.block.Blocks;
 import net.minecraft.block.Material;
 import net.minecraft.block.entity.BlockEntityType;
-import net.minecraft.item.BlockItem;
-import net.minecraft.item.Item;
+import net.minecraft.item.*;
 import net.minecraft.loot.LootPool;
 import net.minecraft.loot.LootTables;
 import net.minecraft.loot.condition.SurvivesExplosionLootCondition;
@@ -39,7 +40,35 @@ public class ExampleMod implements ModInitializer {
 	public static Block magicTable;
 	public static ScreenHandlerType<MagicTableScreenHandler> magicTableScreenHandler;
 	public static Item magicCrystal;
+	public static Item icon;
+	public static Item n_s, app_S, av_S, m_S, g_S;
+	public static ItemGroup group = FabricItemGroupBuilder.build(
+			new Identifier("eaw", "main"),
+        () -> new ItemStack(icon));
 
+	public static void doThing(ItemStack stack){
+		stack.getOrCreateNbt().putString("rod", "oak_rod");
+		stack.getOrCreateNbt().putString("crystal", "crystal");
+	}
+
+	ItemGroup OTHER_GROUP = FabricItemGroupBuilder.create(
+			new Identifier("eaw", "rods"))
+			.icon(() -> new ItemStack(magicCrystal))
+			.appendItems(stacks -> {
+				ItemStack n_st = new ItemStack(n_s), app_St = new ItemStack(app_S), av_St = new ItemStack(av_S), m_St = new ItemStack(m_S), g_St = new ItemStack(g_S);
+
+				doThing(n_st);
+				doThing(app_St);
+				doThing(av_St);
+				doThing(m_St);
+				doThing(g_St);
+				stacks.add(n_st);
+				stacks.add(app_St.copy());
+				stacks.add(av_St.copy());
+				stacks.add(m_St.copy());
+				stacks.add(g_St);
+			})
+			.build();
 
 	@Override
 	public void onInitialize() {
@@ -50,46 +79,46 @@ public class ExampleMod implements ModInitializer {
 
 		magicTableScreenHandler = ScreenHandlerRegistry.registerSimple(new Identifier("eaw", "magic_table_block"), MagicTableScreenHandler::new);
 
-		Registry.register(Registry.ITEM, new Identifier("eaw", "novice_staff"), new AbstractMagicRodItem(new Item.Settings().maxCount(1), 20, SpellRank.novice, 3));
-		Registry.register(Registry.ITEM, new Identifier("eaw", "apprentice_staff"), new AbstractMagicRodItem(new Item.Settings().maxCount(1), 50, SpellRank.apprentice, 4));
-		Registry.register(Registry.ITEM, new Identifier("eaw", "average_staff"), new AbstractMagicRodItem(new Item.Settings().maxCount(1).rarity(Rarity.UNCOMMON), 75, SpellRank.average, 5));
-		Registry.register(Registry.ITEM, new Identifier("eaw", "master_staff"), new AbstractMagicRodItem(new Item.Settings().maxCount(1).rarity(Rarity.RARE), 75, SpellRank.master, 7));
-		Registry.register(Registry.ITEM, new Identifier("eaw", "god_staff"), new AbstractMagicRodItem(new Item.Settings().maxCount(1).rarity(Rarity.EPIC), 150, SpellRank.god, 8));
+		n_s = Registry.register(Registry.ITEM, new Identifier("eaw", "novice_staff"), new AbstractMagicRodItem(new Item.Settings().maxCount(1), 20, SpellRank.novice, 3));
+		app_S = Registry.register(Registry.ITEM, new Identifier("eaw", "apprentice_staff"), new AbstractMagicRodItem(new Item.Settings().maxCount(1), 50, SpellRank.apprentice, 4));
+		av_S = Registry.register(Registry.ITEM, new Identifier("eaw", "average_staff"), new AbstractMagicRodItem(new Item.Settings().maxCount(1).rarity(Rarity.UNCOMMON), 75, SpellRank.average, 5));
+		m_S = Registry.register(Registry.ITEM, new Identifier("eaw", "master_staff"), new AbstractMagicRodItem(new Item.Settings().maxCount(1).rarity(Rarity.RARE), 75, SpellRank.master, 7));
+		g_S = Registry.register(Registry.ITEM, new Identifier("eaw", "god_staff"), new AbstractMagicRodItem(new Item.Settings().maxCount(1).rarity(Rarity.EPIC), 150, SpellRank.god, 8));
 
 		Registry.register(Registry.ITEM, new Identifier("eaw", "empty_spell_book"), new AbstractSpellBookItem());
 
-		magicCrystal = Registry.register(Registry.ITEM, new Identifier("eaw", "magic_crystal"), new Item(new Item.Settings().maxCount(64)));
-		Registry.register(Registry.ITEM, new Identifier("eaw", "crystal"), new Item(new Item.Settings().maxCount(1)));
-		Registry.register(Registry.ITEM, new Identifier("eaw", "red_crystal"), new Item(new Item.Settings().maxCount(1)));
-		Registry.register(Registry.ITEM, new Identifier("eaw", "blue_crystal"), new Item(new Item.Settings().maxCount(1)));
-		Registry.register(Registry.ITEM, new Identifier("eaw", "green_crystal"), new Item(new Item.Settings().maxCount(1)));
-		Registry.register(Registry.ITEM, new Identifier("eaw", "lime_crystal"), new Item(new Item.Settings().maxCount(1)));
-		Registry.register(Registry.ITEM, new Identifier("eaw", "light_gray_crystal"), new Item(new Item.Settings().maxCount(1)));
-		Registry.register(Registry.ITEM, new Identifier("eaw", "light_blue_crystal"), new Item(new Item.Settings().maxCount(1)));
-		Registry.register(Registry.ITEM, new Identifier("eaw", "cyan_crystal"), new Item(new Item.Settings().maxCount(1)));
-		Registry.register(Registry.ITEM, new Identifier("eaw", "orange_crystal"), new Item(new Item.Settings().maxCount(1)));
-		Registry.register(Registry.ITEM, new Identifier("eaw", "yellow_crystal"), new Item(new Item.Settings().maxCount(1)));
-		Registry.register(Registry.ITEM, new Identifier("eaw", "white_crystal"), new Item(new Item.Settings().maxCount(1)));
-		Registry.register(Registry.ITEM, new Identifier("eaw", "gray_crystal"), new Item(new Item.Settings().maxCount(1)));
-		Registry.register(Registry.ITEM, new Identifier("eaw", "black_crystal"), new Item(new Item.Settings().maxCount(1)));
-		Registry.register(Registry.ITEM, new Identifier("eaw", "pink_crystal"), new Item(new Item.Settings().maxCount(1)));
-		Registry.register(Registry.ITEM, new Identifier("eaw", "magenta_crystal"), new Item(new Item.Settings().maxCount(1)));
-		Registry.register(Registry.ITEM, new Identifier("eaw", "purple_crystal"), new Item(new Item.Settings().maxCount(1)));
-		Registry.register(Registry.ITEM, new Identifier("eaw", "brown_crystal"), new Item(new Item.Settings().maxCount(1)));
+		magicCrystal = Registry.register(Registry.ITEM, new Identifier("eaw", "magic_crystal"), new Item(new Item.Settings().group(group).maxCount(64)));
+		Registry.register(Registry.ITEM, new Identifier("eaw", "crystal"), new Item(new Item.Settings().group(group).maxCount(1)));
+		Registry.register(Registry.ITEM, new Identifier("eaw", "red_crystal"), new Item(new Item.Settings().group(group).maxCount(1)));
+		Registry.register(Registry.ITEM, new Identifier("eaw", "blue_crystal"), new Item(new Item.Settings().group(group).maxCount(1)));
+		Registry.register(Registry.ITEM, new Identifier("eaw", "green_crystal"), new Item(new Item.Settings().group(group).maxCount(1)));
+		Registry.register(Registry.ITEM, new Identifier("eaw", "lime_crystal"), new Item(new Item.Settings().group(group).maxCount(1)));
+		Registry.register(Registry.ITEM, new Identifier("eaw", "light_gray_crystal"), new Item(new Item.Settings().group(group).maxCount(1)));
+		Registry.register(Registry.ITEM, new Identifier("eaw", "light_blue_crystal"), new Item(new Item.Settings().group(group).maxCount(1)));
+		Registry.register(Registry.ITEM, new Identifier("eaw", "cyan_crystal"), new Item(new Item.Settings().group(group).maxCount(1)));
+		Registry.register(Registry.ITEM, new Identifier("eaw", "orange_crystal"), new Item(new Item.Settings().group(group).maxCount(1)));
+		Registry.register(Registry.ITEM, new Identifier("eaw", "yellow_crystal"), new Item(new Item.Settings().group(group).maxCount(1)));
+		Registry.register(Registry.ITEM, new Identifier("eaw", "white_crystal"), new Item(new Item.Settings().group(group).maxCount(1)));
+		Registry.register(Registry.ITEM, new Identifier("eaw", "gray_crystal"), new Item(new Item.Settings().group(group).maxCount(1)));
+		Registry.register(Registry.ITEM, new Identifier("eaw", "black_crystal"), new Item(new Item.Settings().group(group).maxCount(1)));
+		Registry.register(Registry.ITEM, new Identifier("eaw", "pink_crystal"), new Item(new Item.Settings().group(group).maxCount(1)));
+		Registry.register(Registry.ITEM, new Identifier("eaw", "magenta_crystal"), new Item(new Item.Settings().group(group).maxCount(1)));
+		Registry.register(Registry.ITEM, new Identifier("eaw", "purple_crystal"), new Item(new Item.Settings().group(group).maxCount(1)));
+		Registry.register(Registry.ITEM, new Identifier("eaw", "brown_crystal"), new Item(new Item.Settings().group(group).maxCount(1)));
 
-		Registry.register(Registry.ITEM, new Identifier("eaw", "oak_rod"), new Item(new Item.Settings().maxCount(1)));
-		Registry.register(Registry.ITEM, new Identifier("eaw", "spruce_rod"), new Item(new Item.Settings().maxCount(1)));
-		Registry.register(Registry.ITEM, new Identifier("eaw", "birch_rod"), new Item(new Item.Settings().maxCount(1)));
-		Registry.register(Registry.ITEM, new Identifier("eaw", "jungle_rod"), new Item(new Item.Settings().maxCount(1)));
-		Registry.register(Registry.ITEM, new Identifier("eaw", "acacia_rod"), new Item(new Item.Settings().maxCount(1)));
-		Registry.register(Registry.ITEM, new Identifier("eaw", "dark_oak_rod"), new Item(new Item.Settings().maxCount(1)));
-		Registry.register(Registry.ITEM, new Identifier("eaw", "crimson_rod"), new Item(new Item.Settings().maxCount(1)));
-		Registry.register(Registry.ITEM, new Identifier("eaw", "warped_rod"), new Item(new Item.Settings().maxCount(1)));
-		Registry.register(Registry.ITEM, new Identifier("eaw", "mangrove_rod"), new Item(new Item.Settings().maxCount(1)));
+		Registry.register(Registry.ITEM, new Identifier("eaw", "oak_rod"), new Item(new Item.Settings().group(group).maxCount(1)));
+		Registry.register(Registry.ITEM, new Identifier("eaw", "spruce_rod"), new Item(new Item.Settings().group(group).maxCount(1)));
+		Registry.register(Registry.ITEM, new Identifier("eaw", "birch_rod"), new Item(new Item.Settings().group(group).maxCount(1)));
+		Registry.register(Registry.ITEM, new Identifier("eaw", "jungle_rod"), new Item(new Item.Settings().group(group).maxCount(1)));
+		Registry.register(Registry.ITEM, new Identifier("eaw", "acacia_rod"), new Item(new Item.Settings().group(group).maxCount(1)));
+		Registry.register(Registry.ITEM, new Identifier("eaw", "dark_oak_rod"), new Item(new Item.Settings().group(group).maxCount(1)));
+		Registry.register(Registry.ITEM, new Identifier("eaw", "crimson_rod"), new Item(new Item.Settings().group(group).maxCount(1)));
+		Registry.register(Registry.ITEM, new Identifier("eaw", "warped_rod"), new Item(new Item.Settings().group(group).maxCount(1)));
+		Registry.register(Registry.ITEM, new Identifier("eaw", "mangrove_rod"), new Item(new Item.Settings().group(group).maxCount(1)));
 
-		Registry.register(Registry.ITEM, new Identifier("eaw", "magic_table"), new BlockItem(magicTable, new Item.Settings().rarity(Rarity.UNCOMMON)));
+		Registry.register(Registry.ITEM, new Identifier("eaw", "magic_table"), new BlockItem(magicTable, new Item.Settings().group(group).rarity(Rarity.UNCOMMON)));
 		Registry.register(Registry.ITEM, new Identifier("eaw", "magic_ore"), new BlockItem(EAWOres.magicOre, new Item.Settings()));
-		Registry.register(Registry.ITEM, new Identifier("eaw", "deepslate_magic_ore"), new BlockItem(EAWOres.deepslateMagicOre, new Item.Settings()));
+		icon = Registry.register(Registry.ITEM, new Identifier("eaw", "deepslate_magic_ore"), new BlockItem(EAWOres.deepslateMagicOre, new Item.Settings()));
 		Registry.register(Registry.ITEM, new Identifier("eaw", "magic_flower"), new BlockItem(EAWOres.magicFlower, new Item.Settings()));
 
 		AdvancedFireballEntity.registry();
