@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:smithing",
+  "addition": {
+    "tag": "eaw:runes"
+  },
+  "base": {
+    "item": "minecraft:golden_shovel"
+  },
+  "result": {
+    "item": "minecraft:golden_shovel"
+  }
+}

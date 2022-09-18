@@ -23,6 +23,9 @@
     ],
     "client": [
       "net.fabricmc.example.EAWClient"
+    ],
+    "fabric-datagen": [
+      "net.fabricmc.example.util.EAWDatagenMain"
     ]
   },
   "mixins": [

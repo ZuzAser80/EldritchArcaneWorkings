@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:smithing",
+  "addition": {
+    "tag": "eaw:runes"
+  },
+  "base": {
+    "item": "minecraft:crossbow"
+  },
+  "result": {
+    "item": "minecraft:crossbow"
+  }
+}

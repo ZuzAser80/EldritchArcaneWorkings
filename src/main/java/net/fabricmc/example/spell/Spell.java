@@ -6,8 +6,7 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
 import net.minecraft.world.World;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public abstract class Spell {
 
@@ -41,6 +40,13 @@ public abstract class Spell {
         NbtCompound nbt = new NbtCompound();
         nbt.putString("spellName", this.getName());
         return nbt;
+    }
+
+    public static NbtElement random() {
+        List<String> keysAsArray = new ArrayList<String>(spellHashMap.keySet());
+        Random r = new Random();
+        System.out.println("nbt: " + spellHashMap.get(keysAsArray.get(r.nextInt(keysAsArray.size()))).toNbt());
+        return spellHashMap.get(keysAsArray.get(r.nextInt(keysAsArray.size()))).toNbt();
     }
 
     public static Spell fromNbt(NbtCompound nbt) {

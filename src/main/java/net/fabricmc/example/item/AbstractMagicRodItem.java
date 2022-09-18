@@ -49,7 +49,7 @@ public class AbstractMagicRodItem extends Item {
 
     public void setSpellList(List<Spell> list, ItemStack stack) {
         int maxSpellSlots = stack.getOrCreateNbt().getInt("maxSpellSlot");
-        for(int i = 0; i < (maxSpellSlots); i++) {
+        for(int i = 0; i <= (maxSpellSlots); i++) {
             if(list.get(i) != null) {
                 stack.getOrCreateSubNbt("spells").put("spell_" + i, list.get(i).toNbt());
             } else {
@@ -64,30 +64,45 @@ public class AbstractMagicRodItem extends Item {
 
     public void switchCurrentSpell(ItemStack stack) {
         int maxSpellSlots = stack.getOrCreateNbt().getInt("maxSpellSlot");
+        int currentSpellIndex = stack.getOrCreateNbt().getInt("currentSpellIndex");
         List<Spell> spellList = this.getSpellList(stack);
-        if(getCurrentSpellIndex(stack) < (maxSpellSlots - 1)) {
-            stack.getOrCreateSubNbt("spells").put("currentSpell", spellList.get(getCurrentSpellIndex(stack) + 1).toNbt());
+        if(currentSpellIndex < maxSpellSlots) {
+            System.out.println("IGoByLOtsOfNames: " + spellList.get(currentSpellIndex).toNbt() + " : " + currentSpellIndex);
+            stack.getOrCreateSubNbt("spells").put("currentSpell", spellList.get(currentSpellIndex).toNbt());
         } else {
             stack.getOrCreateSubNbt("spells").put("currentSpell", spellList.get(0).toNbt());
+            stack.getOrCreateNbt().putInt("currentSpellIndex", 0);
+            currentSpellIndex = 0;
+            System.out.println("changed to 0");
         }
+        currentSpellIndex++;
+        stack.getOrCreateNbt().putInt("currentSpellIndex", currentSpellIndex);
     }
 
     public void switchCurrentSpellDownwards(ItemStack stack) {
         int maxSpellSlots = stack.getOrCreateNbt().getInt("maxSpellSlot");
+        int currentSpellIndex = stack.getOrCreateNbt().getInt("currentSpellIndex");
         List<Spell> spellList = this.getSpellList(stack);
-        if(getCurrentSpellIndex(stack) > 0) {
-            stack.getOrCreateSubNbt("spells").put("currentSpell", spellList.get(getCurrentSpellIndex(stack) - 1).toNbt());
+        if(currentSpellIndex >= 0) {
+            System.out.println("MinusIGoByLOtsOfNames: " + spellList.get(currentSpellIndex).toNbt() + " : " + currentSpellIndex);
+
+            stack.getOrCreateSubNbt("spells").put("currentSpell", spellList.get(currentSpellIndex).toNbt());
+            currentSpellIndex--;
         } else {
             stack.getOrCreateSubNbt("spells").put("currentSpell", spellList.get(maxSpellSlots - 1).toNbt());
+            System.out.println("changed to " + (maxSpellSlots - 1));
+            currentSpellIndex = maxSpellSlots - 1;
         }
+        stack.getOrCreateNbt().putInt("currentSpellIndex", currentSpellIndex);
     }
-
+    //TODO: ADD "SPELL INDEX" TO NBT
     @Override
     public void inventoryTick(ItemStack stack, World world, Entity entity, int slot, boolean selected) {
         if(stack.isOf(this) && (stack.getNbt() == null ||stack.getNbt().getString("rod") == null && stack.getNbt().getString("crystal") == null || stack.getNbt().getString("rod").equals("") || stack.getNbt().getString("crystal").equals(""))) {
             stack.getOrCreateNbt().putFloat("manaCount", manaCount);
             stack.getOrCreateNbt().putString("rod", "oak_rod");
             stack.getOrCreateNbt().putString("crystal", "crystal");
+            stack.getOrCreateNbt().putInt("currentSpellIndex", 0);
             stack.getOrCreateNbt().putInt("maxSpellSlot", ((AbstractMagicRodItem)stack.getItem()).maxSpells);
         }
     }

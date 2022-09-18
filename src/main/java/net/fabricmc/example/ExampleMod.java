@@ -11,6 +11,11 @@ import net.fabricmc.example.entity.water.AdvancedSnowballEntity;
 import net.fabricmc.example.item.AbstractMagicRodItem;
 import net.fabricmc.example.item.AbstractSpellBookItem;
 import net.fabricmc.example.networking.EAWEvents;
+import net.fabricmc.example.rune.Rune;
+import net.fabricmc.example.rune.RuneItem;
+import net.fabricmc.example.rune.RuneStrength;
+import net.fabricmc.example.rune.RuneType;
+import net.fabricmc.example.spell.Spell;
 import net.fabricmc.example.spell.SpellRank;
 import net.fabricmc.example.spell.spells.*;
 import net.fabricmc.example.worldgen.EAWOres;
@@ -29,6 +34,10 @@ import net.minecraft.loot.LootPool;
 import net.minecraft.loot.LootTables;
 import net.minecraft.loot.condition.SurvivesExplosionLootCondition;
 import net.minecraft.loot.entry.ItemEntry;
+import net.minecraft.loot.function.SetCountLootFunction;
+import net.minecraft.loot.function.SetNbtLootFunction;
+import net.minecraft.loot.provider.number.ConstantLootNumberProvider;
+import net.minecraft.nbt.NbtElement;
 import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.Rarity;
@@ -36,6 +45,7 @@ import net.minecraft.util.registry.Registry;
 
 public class ExampleMod implements ModInitializer {
 
+	public static Item emptySpellBook;
 	public static BlockEntityType<MagicTableBlockEntity> magicTableEntity;
 	public static Block magicTable;
 	public static ScreenHandlerType<MagicTableScreenHandler> magicTableScreenHandler;
@@ -85,7 +95,7 @@ public class ExampleMod implements ModInitializer {
 		m_S = Registry.register(Registry.ITEM, new Identifier("eaw", "master_staff"), new AbstractMagicRodItem(new Item.Settings().maxCount(1).rarity(Rarity.RARE), 75, SpellRank.master, 7));
 		g_S = Registry.register(Registry.ITEM, new Identifier("eaw", "god_staff"), new AbstractMagicRodItem(new Item.Settings().maxCount(1).rarity(Rarity.EPIC), 150, SpellRank.god, 8));
 
-		Registry.register(Registry.ITEM, new Identifier("eaw", "empty_spell_book"), new AbstractSpellBookItem());
+		emptySpellBook = Registry.register(Registry.ITEM, new Identifier("eaw", "empty_spell_book"), new AbstractSpellBookItem());
 
 		magicCrystal = Registry.register(Registry.ITEM, new Identifier("eaw", "magic_crystal"), new Item(new Item.Settings().group(group).maxCount(64)));
 		Registry.register(Registry.ITEM, new Identifier("eaw", "crystal"), new Item(new Item.Settings().group(group).maxCount(1)));
@@ -105,6 +115,12 @@ public class ExampleMod implements ModInitializer {
 		Registry.register(Registry.ITEM, new Identifier("eaw", "magenta_crystal"), new Item(new Item.Settings().group(group).maxCount(1)));
 		Registry.register(Registry.ITEM, new Identifier("eaw", "purple_crystal"), new Item(new Item.Settings().group(group).maxCount(1)));
 		Registry.register(Registry.ITEM, new Identifier("eaw", "brown_crystal"), new Item(new Item.Settings().group(group).maxCount(1)));
+		Registry.register(Registry.ITEM, new Identifier("eaw", "fire_rune_1_1"), new RuneItem(new Item.Settings().group(group).maxCount(1), new Rune(RuneStrength.WEAK, RuneType.FIRE, "Weak Fiery Touch")));
+		Registry.register(Registry.ITEM, new Identifier("eaw", "fire_rune_1_2"), new RuneItem(new Item.Settings().group(group).maxCount(1), new Rune(RuneStrength.NORMAL, RuneType.FIRE, "Normal Fiery Touch")));
+		Registry.register(Registry.ITEM, new Identifier("eaw", "fire_rune_1_3"), new RuneItem(new Item.Settings().group(group).maxCount(1), new Rune(RuneStrength.STRONG, RuneType.FIRE, "Strong Fiery Touch")));
+		Registry.register(Registry.ITEM, new Identifier("eaw", "water_rune_1_1"), new RuneItem(new Item.Settings().group(group).maxCount(1), new Rune(RuneStrength.WEAK, RuneType.WATER, "Weak Pocket Riptide")));
+		Registry.register(Registry.ITEM, new Identifier("eaw", "water_rune_1_2"), new RuneItem(new Item.Settings().group(group).maxCount(1), new Rune(RuneStrength.NORMAL, RuneType.WATER, "Normal Pocket Riptide")));
+		Registry.register(Registry.ITEM, new Identifier("eaw", "water_rune_1_3"), new RuneItem(new Item.Settings().group(group).maxCount(1), new Rune(RuneStrength.STRONG, RuneType.WATER, "Strong Pocket Riptide")));
 
 		Registry.register(Registry.ITEM, new Identifier("eaw", "oak_rod"), new Item(new Item.Settings().group(group).maxCount(1)));
 		Registry.register(Registry.ITEM, new Identifier("eaw", "spruce_rod"), new Item(new Item.Settings().group(group).maxCount(1)));
@@ -142,16 +158,57 @@ public class ExampleMod implements ModInitializer {
 		new LeapSpell();
 		new SnowballSpell();
 
-		changeLoot();
+		ItemStack spellBook = new ItemStack(emptySpellBook);
+		spellBook.getOrCreateNbt().put("spell", new LeapSpell().toNbt());
+
+		changeLoot(LootTables.END_CITY_TREASURE_CHEST, magicCrystal);
+		changeLoot(LootTables.BASTION_BRIDGE_CHEST, magicCrystal);
+		changeLoot(LootTables.BASTION_BRIDGE_CHEST, spellBook);
+		changeLoot(LootTables.END_CITY_TREASURE_CHEST, spellBook);
+		spellBook.getOrCreateNbt().put("spell", new IceShieldSpell().toNbt());
+		changeLoot(LootTables.END_CITY_TREASURE_CHEST, spellBook);
+		changeLoot(LootTables.IGLOO_CHEST_CHEST, spellBook);
+		spellBook.getOrCreateNbt().put("spell", new AdvancedSnowballSpell().toNbt());
+		changeLoot(LootTables.IGLOO_CHEST_CHEST, spellBook);
+		spellBook.getOrCreateNbt().put("spell", new AdvancedFireballSpell().toNbt());
+		changeLoot(LootTables.NETHER_BRIDGE_CHEST, spellBook);
+		changeLoot(LootTables.RUINED_PORTAL_CHEST, spellBook);
+		changeLoot(LootTables.BASTION_BRIDGE_CHEST, spellBook);
+		spellBook.getOrCreateNbt().put("spell", new FlameSpell().toNbt());
+		changeLoot(LootTables.NETHER_BRIDGE_CHEST, spellBook);
+		changeLoot(LootTables.RUINED_PORTAL_CHEST, spellBook);
+		changeLoot(LootTables.BASTION_BRIDGE_CHEST, spellBook);
 	}
-	public static void changeLoot() {
+	public static void changeLoot(Identifier identifier, Item replacement) {
 		LootTableEvents.MODIFY.register((resourceManager, lootManager, id, tableBuilder, source) -> {
-			if (LootTables.END_CITY_TREASURE_CHEST.equals(id) && source.isBuiltin()) {
+			if (identifier.equals(id) && source.isBuiltin()) {
 				LootPool.Builder pool = LootPool.builder()
-						.with(ItemEntry.builder(magicCrystal))
+						.with(ItemEntry.builder(replacement))
 						.conditionally(SurvivesExplosionLootCondition.builder());
 				tableBuilder.pool(pool);
 			}
 		});
 	}
+	public static void changeLoot(Identifier identifier, ItemStack replacement) {
+		LootTableEvents.MODIFY.register((resourceManager, lootManager, id, tableBuilder, source) -> {
+			if (identifier.equals(id) && source.isBuiltin()) {
+				LootPool.Builder pool = LootPool.builder()
+						.with(addSpellBook(replacement))
+						.conditionally(SurvivesExplosionLootCondition.builder());
+				tableBuilder.pool(pool);
+			}
+		});
+	}
+	public static ItemEntry.Builder<?> addSpellBook(ItemStack stack)
+	{
+		ItemEntry.Builder<?> builder = ItemEntry.builder(stack.getItem());
+		if (stack.getNbt() != null) {
+			builder.apply(SetNbtLootFunction.builder(stack.getNbt()));
+		}
+		if (stack.getCount() > 1) {
+			builder.apply(SetCountLootFunction.builder(ConstantLootNumberProvider.create(stack.getCount())));
+		}
+		return builder;
+	}
+
 }

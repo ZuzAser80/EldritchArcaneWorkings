@@ -33,6 +33,10 @@ public class AbstractSpellBookItem extends Item {
         return Spell.fromNbt((NbtCompound)stack.getOrCreateNbt().get("spell"));
     }
 
+    public static void randomizeContents(ItemStack stack) {
+        stack.getOrCreateNbt().put("spell", Spell.random());
+    }
+
     @Override
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
         Formatting formatting;

@@ -2,6 +2,9 @@ package net.fabricmc.example.networking;
 
 import io.netty.buffer.Unpooled;
 import net.fabricmc.example.item.AbstractMagicRodItem;
+import net.fabricmc.example.rune.Rune;
+import net.fabricmc.example.rune.RuneStrength;
+import net.fabricmc.example.rune.RuneType;
 import net.fabricmc.example.spell.spells.*;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
