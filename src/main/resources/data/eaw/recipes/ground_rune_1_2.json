@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "tag": "minecraft:stone_tool_materials"
+    },
+    {
+      "tag": "minecraft:stone_tool_materials"
+    },
+    {
+      "tag": "minecraft:stone_tool_materials"
+    },
+    {
+      "item": "eaw:ground_rune_1_1"
+    }
+  ],
+  "result": {
+    "item": "eaw:ground_rune_1_2"
+  }
+}

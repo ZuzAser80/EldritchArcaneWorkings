@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "minecraft:blaze_rod"
+    },
+    {
+      "item": "minecraft:water_bucket"
+    },
+    {
+      "item": "minecraft:glass"
+    },
+    {
+      "item": "eaw:magic_crystal"
+    },
+    {
+      "tag": "minecraft:stone_tool_materials"
+    }
+  ],
+  "result": {
+    "item": "eaw:rune_core"
+  }
+}

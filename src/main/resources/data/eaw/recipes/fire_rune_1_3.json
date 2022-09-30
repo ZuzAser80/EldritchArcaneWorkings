@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "minecraft:lava_bucket"
+    },
+    {
+      "item": "eaw:fire_rune_1_2"
+    }
+  ],
+  "result": {
+    "item": "eaw:fire_rune_1_3"
+  }
+}

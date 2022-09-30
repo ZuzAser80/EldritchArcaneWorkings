@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "minecraft:glass"
+    },
+    {
+      "item": "eaw:rune_core"
+    }
+  ],
+  "result": {
+    "item": "eaw:air_rune_1_1"
+  }
+}

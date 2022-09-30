@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "minecraft:blaze_rod"
+    },
+    {
+      "item": "minecraft:blaze_rod"
+    },
+    {
+      "item": "minecraft:blaze_powder"
+    },
+    {
+      "item": "eaw:fire_rune_1_1"
+    }
+  ],
+  "result": {
+    "item": "eaw:fire_rune_1_2"
+  }
+}

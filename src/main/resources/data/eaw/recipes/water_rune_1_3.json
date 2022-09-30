@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "minecraft:water_bucket"
+    },
+    {
+      "item": "eaw:water_rune_1_2"
+    }
+  ],
+  "result": {
+    "item": "eaw:water_rune_1_3"
+  }
+}
