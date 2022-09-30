@@ -4,9 +4,9 @@
   "version": "${version}",
 
   "name": "Eldritch Arcane Workings",
-  "description": "This is an example description! Tell everyone what your mod is about!",
+  "description": "A Electroblob's Wizardary inspired mod witch adds magic to Minecraft.",
   "authors": [
-    "Me!"
+    "ZuzAser80"
   ],
   "contact": {
     "homepage": "https://fabricmc.net/",
@@ -19,17 +19,17 @@
   "environment": "*",
   "entrypoints": {
     "main": [
-      "net.fabricmc.example.ExampleMod"
+      "net.fabricmc.eaw.ExampleMod"
     ],
     "client": [
-      "net.fabricmc.example.EAWClient"
+      "net.fabricmc.eaw.EAWClient"
     ],
     "fabric-datagen": [
-      "net.fabricmc.example.util.EAWDatagenMain"
+      "net.fabricmc.eaw.util.EAWDatagenMain"
     ]
   },
   "mixins": [
-    "modid.mixins.json"
+    "eaw.mixins.json"
   ],
 
   "depends": {

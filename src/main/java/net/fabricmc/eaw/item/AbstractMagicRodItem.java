@@ -61,7 +61,6 @@ public class AbstractMagicRodItem extends Item {
         int currentSpellIndex = stack.getOrCreateNbt().getInt("currentSpellIndex");
         List<Spell> spellList = this.getSpellList(stack);
         if(currentSpellIndex < 8) {
-            System.out.println("IGoByLOtsOfNames: " + spellList.get(currentSpellIndex).toNbt() + " : " + currentSpellIndex);
             stack.getOrCreateSubNbt("spells").put("currentSpell", spellList.get(currentSpellIndex).toNbt());
         } else {
             stack.getOrCreateSubNbt("spells").put("currentSpell", spellList.get(0).toNbt());
@@ -77,8 +76,6 @@ public class AbstractMagicRodItem extends Item {
         int currentSpellIndex = stack.getOrCreateNbt().getInt("currentSpellIndex");
         List<Spell> spellList = this.getSpellList(stack);
         if(currentSpellIndex >= 0) {
-            System.out.println("MinusIGoByLOtsOfNames: " + spellList.get(currentSpellIndex).toNbt() + " : " + currentSpellIndex);
-
             stack.getOrCreateSubNbt("spells").put("currentSpell", spellList.get(currentSpellIndex).toNbt());
             currentSpellIndex--;
         } else {
