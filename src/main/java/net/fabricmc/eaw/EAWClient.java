@@ -1,6 +1,8 @@
 package net.fabricmc.eaw;
 
 import net.fabricmc.api.ClientModInitializer;
+import net.fabricmc.eaw.armor.Knight1ArmorMaterial;
+import net.fabricmc.eaw.armor.model.knight_1_chest;
 import net.fabricmc.eaw.blocks.MagicTableScreen;
 import net.fabricmc.eaw.entity.fire.AdvancedFireballEntity;
 import net.fabricmc.eaw.entity.generic.LandmineEntity;
@@ -25,6 +27,8 @@ import net.minecraft.item.Item;
 import net.minecraft.util.Identifier;
 
 public class EAWClient implements ClientModInitializer {
+
+    private BipedEntityModel<LivingEntity> armorModel;
 
     @Override
     public void onInitializeClient() {
@@ -56,14 +60,14 @@ public class EAWClient implements ClientModInitializer {
         //Screen(s)
         ScreenRegistry.register(ExampleMod.magicTableScreenHandler, MagicTableScreen::new);
 
-        //renderArmor(ItemRegistry.KevlarChest, EquipmentSlot.CHEST, new Identifier("eaw", "textures/entity/armor/diamond_magic_infused_armor_chest_entity.png"), new Identifier("eaw", "diamond_magic_infused_armor_chest"), "kevlar_chest_render_layer", KevlarChestplateModel::getTexturedModelData);
+        renderArmor(ExampleMod.Knight1Chest, EquipmentSlot.CHEST, new Identifier("eaw", "textures/entity/armor/knight_1_chest_entity.png"), new Identifier("eaw", "knight_1_chest_entity"), "knight_1_chest_render_layer", knight_1_chest::getTexturedModelData);
         //renderArmor(ItemRegistry.KevlarHelm, EquipmentSlot.HEAD, new Identifier("eaw", "textures/entity/armor/diamond_magic_infused_armor_helmet_entity.png"), new Identifier("eaw", "diamond_magic_infused_armor_helmet"), "kevlar_helmet_render_layer", KevlarHelmetModel::getTexturedModelData);
     }
     public void renderArmor(Item item, EquipmentSlot equipmentSlot, Identifier texture, Identifier layerId, String layerName, EntityModelLayerRegistry.TexturedModelDataProvider provider) {
         EntityModelLayer layer = new EntityModelLayer(layerId, layerName);
         EntityModelLayerRegistry.registerModelLayer(layer, provider);
         ArmorRenderer.register((matrices, vertexConsumers, stack, entity, slot, light, model) -> {
-            BipedEntityModel<LivingEntity> armorModel = new BipedEntityModel<>(MinecraftClient.getInstance().getEntityModelLoader().getModelPart(layer));
+            armorModel = new BipedEntityModel<>(MinecraftClient.getInstance().getEntityModelLoader().getModelPart(layer));
             model.setAttributes(armorModel);
             armorModel.setVisible(slot == equipmentSlot);
             ArmorRenderer.renderPart(matrices, vertexConsumers, light, stack, armorModel, texture);

@@ -34,9 +34,8 @@ public class AbstractMagicRodItem extends Item {
 
     public List<Spell> getSpellList(ItemStack stack) {
         List<Spell> spellList = new LinkedList<>();
-        int maxSpellSlots = stack.getOrCreateNbt().getInt("maxSpellSlot");
         NbtCompound spellsSubNbt = stack.getOrCreateSubNbt("spells");
-        for(int i = 0; i < maxSpellSlots; i++) {
+        for(int i = 0; i < 8; i++) {
             spellList.add(Spell.fromNbt((NbtCompound)spellsSubNbt.get("spell_" + i)));
         }
         return spellList;
@@ -61,6 +60,7 @@ public class AbstractMagicRodItem extends Item {
         int currentSpellIndex = stack.getOrCreateNbt().getInt("currentSpellIndex");
         List<Spell> spellList = this.getSpellList(stack);
         if(currentSpellIndex < 8) {
+            System.out.println("Moving Up");
             stack.getOrCreateSubNbt("spells").put("currentSpell", spellList.get(currentSpellIndex).toNbt());
         } else {
             stack.getOrCreateSubNbt("spells").put("currentSpell", spellList.get(0).toNbt());
@@ -75,7 +75,8 @@ public class AbstractMagicRodItem extends Item {
     public void switchCurrentSpellDownwards(ItemStack stack) {
         int currentSpellIndex = stack.getOrCreateNbt().getInt("currentSpellIndex");
         List<Spell> spellList = this.getSpellList(stack);
-        if(currentSpellIndex >= 0) {
+        if(currentSpellIndex > 0) {
+            System.out.println("Moving Down");
             stack.getOrCreateSubNbt("spells").put("currentSpell", spellList.get(currentSpellIndex).toNbt());
             currentSpellIndex--;
         } else {
@@ -88,7 +89,7 @@ public class AbstractMagicRodItem extends Item {
     //TODO: ADD "SPELL INDEX" TO NBT
     @Override
     public void inventoryTick(ItemStack stack, World world, Entity entity, int slot, boolean selected) {
-        if(stack.isOf(this) && (stack.getNbt() == null ||stack.getNbt().getString("rod") == null && stack.getNbt().getString("crystal") == null || stack.getNbt().getString("rod").equals("") || stack.getNbt().getString("crystal").equals(""))) {
+        if(stack.isOf(this) && (stack.getNbt() == null || stack.getNbt().getString("rod") == null || stack.getNbt().getString("crystal") == null || stack.getNbt().getString("rod").equals("") || stack.getNbt().getString("crystal").equals(""))) {
             stack.getOrCreateNbt().putFloat("manaCount", manaCount);
             stack.getOrCreateNbt().putString("rod", "oak_rod");
             stack.getOrCreateNbt().putString("crystal", "crystal");

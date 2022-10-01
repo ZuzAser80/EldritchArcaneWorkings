@@ -1,6 +1,7 @@
 package net.fabricmc.eaw;
 
 import net.fabricmc.api.ModInitializer;
+import net.fabricmc.eaw.armor.Knight1ArmorMaterial;
 import net.fabricmc.eaw.blocks.MagicTableBlock;
 import net.fabricmc.eaw.blocks.MagicTableBlockEntity;
 import net.fabricmc.eaw.blocks.MagicTableScreenHandler;
@@ -28,6 +29,7 @@ import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.Material;
 import net.minecraft.block.entity.BlockEntityType;
+import net.minecraft.entity.EquipmentSlot;
 import net.minecraft.item.*;
 import net.minecraft.loot.LootPool;
 import net.minecraft.loot.LootTables;
@@ -53,6 +55,7 @@ public class ExampleMod implements ModInitializer {
 	public static ItemGroup group = FabricItemGroupBuilder.build(
 			new Identifier("eaw", "main"),
         () -> new ItemStack(icon));
+	public static ArmorItem Knight1Chest;
 
 	public static void doThing(ItemStack stack){
 		stack.getOrCreateNbt().putString("rod", "oak_rod");
@@ -151,6 +154,13 @@ public class ExampleMod implements ModInitializer {
 
 		ServerPlayNetworking.registerGlobalReceiver(new Identifier("eaw", "switch_spell_1_packet"), EAWEvents::SpellSwitch1S2CPacket);
         ServerPlayNetworking.registerGlobalReceiver(new Identifier("eaw", "switch_spell_2_packet"), EAWEvents::SpellSwitch2S2CPacket);
+
+        //Armor Materials
+		Knight1ArmorMaterial knight1ArmorMaterial = new Knight1ArmorMaterial();
+
+        //Armor Items
+		Knight1Chest = Registry.register(Registry.ITEM, new Identifier("eaw", "knight_1_chest"), new ArmorItem(knight1ArmorMaterial, EquipmentSlot.CHEST, new Item.Settings().group(group)));
+
 
 		EAWOres.registerOres();
 		//Spell registry
