@@ -86,14 +86,21 @@ public class AbstractMagicRodItem extends Item {
         }
         stack.getOrCreateNbt().putInt("currentSpellIndex", currentSpellIndex);
     }
-    //TODO: ADD "SPELL INDEX" TO NBT
     @Override
     public void inventoryTick(ItemStack stack, World world, Entity entity, int slot, boolean selected) {
-        if(stack.isOf(this) && (stack.getNbt() == null || stack.getNbt().getString("rod") == null || stack.getNbt().getString("crystal") == null || stack.getNbt().getString("rod").equals("") || stack.getNbt().getString("crystal").equals(""))) {
-            stack.getOrCreateNbt().putFloat("manaCount", manaCount);
-            stack.getOrCreateNbt().putString("rod", "oak_rod");
-            stack.getOrCreateNbt().putString("crystal", "crystal");
-            stack.getOrCreateNbt().putInt("currentSpellIndex", 0);
+        if(stack.isOf(this) && selected) {
+            if(stack.getNbt() != null) {
+                if(stack.getNbt().getString("rod") == null || stack.getNbt().getString("rod").equals("")) {
+                    stack.getOrCreateNbt().putString("rod", "oak_rod");
+                } if(stack.getNbt().getString("crystal") == null || stack.getNbt().getString("crystal").equals("")) {
+                    stack.getOrCreateNbt().putString("crystal", "crystal");
+                }
+            } else {
+                stack.getOrCreateNbt().putString("rod", "oak_rod");
+                stack.getOrCreateNbt().putString("crystal", "crystal");
+                stack.getOrCreateNbt().putFloat("manaCount", manaCount);
+                stack.getOrCreateNbt().putInt("currentSpellIndex", 0);
+            }
         }
     }
 

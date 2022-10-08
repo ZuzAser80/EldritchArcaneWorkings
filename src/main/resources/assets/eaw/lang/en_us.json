@@ -50,6 +50,8 @@
   "item.eaw.ground_rune_1_3": "Strong Rocky Storm",
   "itemGroup.eaw.main": "Eldritch Arcane Workings(Main)",
   "itemGroup.eaw.rods": "Eldritch Arcane Workings(Rods)",
-  "block.eaw.magic_table_block": "Magic Table"
+  "block.eaw.magic_table_block": "Magic Table",
+  "block.eaw.magic_flower_block": "Magic Flower"
+
 
 }

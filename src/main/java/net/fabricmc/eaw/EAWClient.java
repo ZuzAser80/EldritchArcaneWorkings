@@ -3,6 +3,7 @@ package net.fabricmc.eaw;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.eaw.armor.Knight1ArmorMaterial;
 import net.fabricmc.eaw.armor.model.knight_1_chest;
+import net.fabricmc.eaw.armor.model.knight_1_helm;
 import net.fabricmc.eaw.blocks.MagicTableScreen;
 import net.fabricmc.eaw.entity.fire.AdvancedFireballEntity;
 import net.fabricmc.eaw.entity.generic.LandmineEntity;
@@ -61,7 +62,7 @@ public class EAWClient implements ClientModInitializer {
         ScreenRegistry.register(ExampleMod.magicTableScreenHandler, MagicTableScreen::new);
 
         renderArmor(ExampleMod.Knight1Chest, EquipmentSlot.CHEST, new Identifier("eaw", "textures/entity/armor/knight_1_chest_entity.png"), new Identifier("eaw", "knight_1_chest_entity"), "knight_1_chest_render_layer", knight_1_chest::getTexturedModelData);
-        //renderArmor(ItemRegistry.KevlarHelm, EquipmentSlot.HEAD, new Identifier("eaw", "textures/entity/armor/diamond_magic_infused_armor_helmet_entity.png"), new Identifier("eaw", "diamond_magic_infused_armor_helmet"), "kevlar_helmet_render_layer", KevlarHelmetModel::getTexturedModelData);
+        renderArmor(ExampleMod.Knight1Helm, EquipmentSlot.HEAD, new Identifier("eaw", "textures/entity/armor/knight_1_helm_entity.png"), new Identifier("eaw", "knight_1_head_entity"), "knight_1_head_render_layer", knight_1_helm::getTexturedModelData);
     }
     public void renderArmor(Item item, EquipmentSlot equipmentSlot, Identifier texture, Identifier layerId, String layerName, EntityModelLayerRegistry.TexturedModelDataProvider provider) {
         EntityModelLayer layer = new EntityModelLayer(layerId, layerName);

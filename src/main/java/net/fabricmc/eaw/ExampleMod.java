@@ -55,7 +55,7 @@ public class ExampleMod implements ModInitializer {
 	public static ItemGroup group = FabricItemGroupBuilder.build(
 			new Identifier("eaw", "main"),
         () -> new ItemStack(icon));
-	public static ArmorItem Knight1Chest;
+	public static ArmorItem Knight1Chest, Knight1Helm;
 
 	public static void doThing(ItemStack stack){
 		stack.getOrCreateNbt().putString("rod", "oak_rod");
@@ -159,7 +159,8 @@ public class ExampleMod implements ModInitializer {
 		Knight1ArmorMaterial knight1ArmorMaterial = new Knight1ArmorMaterial();
 
         //Armor Items
-		Knight1Chest = Registry.register(Registry.ITEM, new Identifier("eaw", "knight_1_chest"), new ArmorItem(knight1ArmorMaterial, EquipmentSlot.CHEST, new Item.Settings().group(group)));
+		Knight1Chest = Registry.register(Registry.ITEM, new Identifier("eaw", "knight_1_chest"), new ArmorItem(knight1ArmorMaterial, EquipmentSlot.CHEST, new Item.Settings()));
+		Knight1Helm = Registry.register(Registry.ITEM, new Identifier("eaw", "knight_1_helm"), new ArmorItem(knight1ArmorMaterial, EquipmentSlot.HEAD, new Item.Settings()));
 
 
 		EAWOres.registerOres();
